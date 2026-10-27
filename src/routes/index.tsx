@@ -32,11 +32,12 @@ type Product = {
   details: string[];
   image: string;
   paymentUrl?: string;
+  price?: number;
   badge: string;
 };
 
 const products: Product[] = [
-  { id: 1, name: "Mini Aspirador Automotivo Portátil", category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/e3s5SpnqjSMG", badge: "PRATICIDADE" },
+  { id: 1, name: "Mini Aspirador Automotivo Portátil", price: 49.99, category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/e3s5SpnqjSMG", badge: "PRATICIDADE" },
   { id: 2, name: "Conjunto com 10 Copos de Inox 175 ml", category: "Casa e cozinha", description: "Conjunto de copos em aço inox com acabamento hexagonal martelado e parede dupla, uma opção elegante para servir café, chá e outras bebidas.", details: ["10 copos em aço inox", "Capacidade: 175 ml cada", "Altura: 8,5 cm", "Boca: 6,5 cm; base: 5,5 cm"], image: coposInox, paymentUrl: "https://pay.kaiross.com.br/2KXXPAtSF7C1", badge: "KIT COM 10" },
   { id: 3, name: "Jogo de Ferramentas com 46 Peças e Maleta", category: "Ferramentas", description: "Kit compacto para pequenos reparos e tarefas do dia a dia, com soquetes, bits, catraca, extensões e acessórios organizados em uma maleta.", details: ["45 ferramentas e 1 maleta", "Encaixe informado: 1/4 polegada", "Maleta: 24 × 13 × 5 cm", "Material informado: aço e termoplástico"], image: kitFerramentas, paymentUrl: "https://pay.kaiross.com.br/qVSEg6zQPlds", badge: "46 PEÇAS" },
   { id: 4, name: "Escova Secadora para Pets AJ-U07", category: "Pets", description: "Escova secadora 2 em 1 que combina escovação e secagem para ajudar nos cuidados com cães e gatos.", details: ["Cerdas com pontas protegidas, conforme descrição", "Medidas informadas: 12 × 23 cm", "Voltagem informada: 110 V — não bivolt", "Use com cuidado e siga as instruções do fabricante"], image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/smydxoUcFkjr", badge: "CUIDADO PET" },
@@ -155,6 +156,7 @@ function Index() {
                   <span className="inline-block rounded-full bg-citron px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-citron-foreground">{selectedProduct.badge}</span>
                   <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{selectedProduct.category}</p>
                   <h2 className="mt-1 font-display text-2xl font-bold leading-tight sm:text-3xl">{selectedProduct.name}</h2>
+                  {selectedProduct.price !== undefined && <p className="mt-3 font-display text-3xl font-bold text-primary">{selectedProduct.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>}
                   <p className="mt-4 leading-relaxed text-foreground/80">{selectedProduct.description}</p>
                   <h3 className="mt-6 font-display text-lg font-semibold">Informações completas</h3>
                   <ul className="mt-3 space-y-3">{selectedProduct.details.map((detail) => <li key={detail} className="flex gap-2 text-sm text-foreground/80"><Check size={17} className="mt-0.5 shrink-0 text-primary" /><span>{detail}</span></li>)}</ul>
@@ -180,6 +182,7 @@ function Index() {
                   <div className="flex flex-1 flex-col gap-1.5 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">{product.category}</p>
                     <button onClick={() => openProduct(product)} className="text-left font-display text-[15px] font-semibold leading-snug transition group-hover:text-primary">{product.name}</button>
+                    {product.price !== undefined && <p className="mt-1 font-display text-xl font-bold text-primary">{product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>}
                     <p className="line-clamp-2 text-xs text-muted-foreground">{product.description}</p>
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-xs font-semibold text-success"><Truck size={14} /> Envio a consultar</span>
                     <div className="mt-3 grid gap-2">
