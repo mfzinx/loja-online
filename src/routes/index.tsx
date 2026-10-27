@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -37,6 +37,8 @@ function Index() {
   const [search, setSearch] = useState("");
   const [favorites, setFavorites] = useState<number[]>([]);
   const [expanded, setExpanded] = useState<number[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
   const visibleProducts = useMemo(() => products.filter((product) =>
     (category === "Todos" || product.category === category) &&
     (product.name + " " + product.description + " " + product.category).toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))
@@ -87,25 +89,58 @@ function Index() {
         </section>
 
         <section id="produtos" className="mx-auto max-w-6xl px-4 py-8">
-          <div className="flex items-baseline gap-3"><h2 className="text-2xl font-normal text-foreground/80">Ofertas para você</h2><span className="text-sm text-link">{visibleProducts.length} produtos</span></div>
-          {visibleProducts.length ? <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">{visibleProducts.map((product) => (
-            <article key={product.id} className="group flex flex-col overflow-hidden rounded-md bg-card shadow-sm transition hover:shadow-lg">
-              <div className="relative border-b border-border bg-card p-3">
-                <img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className="aspect-square w-full rounded object-cover" />
-                <button onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-background/90 text-link opacity-90 shadow" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></button>
+          {selectedProduct ? (
+            <div className="rounded-lg bg-card p-4 shadow-sm sm:p-6">
+              <button onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-link hover:underline"><ArrowLeft size={18} /> Voltar para os produtos</button>
+              <div className="grid gap-7 md:grid-cols-2">
+                <div>
+                  <div className="overflow-hidden rounded-lg border border-border bg-background">
+                    <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} className="aspect-square w-full object-contain sm:max-h-[520px]" />
+                  </div>
+                  <div className="mt-3 grid grid-cols-4 gap-2">
+                    {[selectedProduct.image,
+                      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=500&q=80",
+                      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80",
+                      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80"
+                    ].map((photo, index) => <button key={photo + index} onClick={() => setSelectedImage(photo)} className={`overflow-hidden rounded-md border-2 ${(selectedImage || selectedProduct.image) === photo ? "border-link" : "border-border"}`} aria-label={`Ver foto ilustrativa ${index + 1}`}><img src={photo} alt="" className="aspect-square w-full object-cover" /></button>)}
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">Fotos ilustrativas para visualização. Confirme as imagens reais do modelo com o vendedor.</p>
+                </div>
+                <div>
+                  <span className="inline-block rounded-sm bg-link px-2 py-1 text-xs font-bold text-primary-foreground">{selectedProduct.badge}</span>
+                  <p className="mt-3 text-sm text-muted-foreground">{selectedProduct.category}</p>
+                  <h2 className="mt-1 text-2xl font-bold leading-tight sm:text-3xl">{selectedProduct.name}</h2>
+                  <p className="mt-4 leading-relaxed text-foreground/80">{selectedProduct.description}</p>
+                  <h3 className="mt-6 text-lg font-semibold">Informações completas</h3>
+                  <ul className="mt-3 space-y-3">{selectedProduct.details.map((detail) => <li key={detail} className="flex gap-2 text-sm text-foreground/80"><Check size={17} className="mt-0.5 shrink-0 text-link" /><span>{detail}</span></li>)}</ul>
+                  <div className="mt-7 rounded-md bg-surface p-4"><p className="text-sm font-semibold">Compra e entrega</p><p className="mt-1 text-sm text-muted-foreground">Preço, pagamento, disponibilidade e condições de entrega são apresentados pelo vendedor na página de compra.</p>
+                    {selectedProduct.paymentUrl ? <a href={selectedProduct.paymentUrl} target="_blank" rel="noreferrer" className="mt-4 block w-full rounded-md bg-primary px-4 py-3 text-center font-semibold text-primary-foreground hover:opacity-90">Comprar agora <ArrowRight className="ml-1 inline" size={17} /></a> : <button disabled className="mt-4 w-full rounded-md bg-secondary px-4 py-3 text-muted-foreground">Em breve</button>}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-1 flex-col p-4">
-                <span className="w-fit rounded-sm bg-link px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground">{product.badge}</span>
-                <h3 className="mt-2 line-clamp-2 text-sm font-normal leading-snug text-foreground/90">{product.name}</h3>
-                <span className="mt-1 text-xs text-muted-foreground">{product.category}</span>
-                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-success"><Truck size={14} /> Envio a consultar</span>
-                <button onClick={() => setExpanded((c) => toggle(c, product.id))} className="mt-2 w-fit text-xs text-link hover:underline">{expanded.includes(product.id) ? "Ocultar detalhes" : "Ver detalhes"}</button>
-                {expanded.includes(product.id) && <div className="mt-2 text-xs text-muted-foreground"><p>{product.description}</p><ul className="mt-2 list-disc space-y-1 pl-4">{product.details.map((d) => <li key={d}>{d}</li>)}</ul></div>}
-                <div className="mt-auto pt-4">{product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" className="block w-full rounded-md bg-primary px-3 py-2.5 text-center text-sm font-semibold text-primary-foreground hover:opacity-90">Comprar agora</a> : <button disabled className="w-full rounded-md bg-secondary px-3 py-2.5 text-sm text-muted-foreground">Em breve</button>}</div>
-              </div>
-            </article>
-          ))}</div> : <div className="mt-4 rounded-md bg-card px-6 py-16 text-center shadow-sm"><Search size={28} className="mx-auto text-muted-foreground" /><h3 className="mt-3 text-lg font-semibold">Nenhum produto encontrado</h3><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-3 text-sm text-link hover:underline">Limpar filtros</button></div>}
-          <p className="mt-6 text-xs text-muted-foreground">Imagens ilustrativas. Especificações podem variar conforme a versão do produto. Pagamento realizado em página externa do vendedor.</p>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-3"><h2 className="text-2xl font-normal text-foreground/80">Ofertas para você</h2><span className="text-sm text-link">{visibleProducts.length} produtos</span></div>
+              {visibleProducts.length ? <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">{visibleProducts.map((product) => (
+                <article key={product.id} className="group flex cursor-pointer flex-col overflow-hidden rounded-md bg-card shadow-sm transition hover:shadow-lg">
+                  <div className="relative border-b border-border bg-card p-3">
+                    <button onClick={() => { setSelectedProduct(product); setSelectedImage(product.image); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="block w-full" aria-label={"Ver informações de " + product.name}><img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className="aspect-square w-full rounded object-cover transition group-hover:scale-[1.02]" /></button>
+                    <button onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-background/90 text-link opacity-90 shadow" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></button>
+                  </div>
+                  <div className="flex flex-1 flex-col p-4">
+                    <span className="w-fit rounded-sm bg-link px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground">{product.badge}</span>
+                    <button onClick={() => { setSelectedProduct(product); setSelectedImage(product.image); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mt-2 text-left text-sm font-normal leading-snug text-foreground/90 hover:text-link">{product.name}</button>
+                    <span className="mt-1 text-xs text-muted-foreground">{product.category}</span>
+                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-success"><Truck size={14} /> Envio a consultar</span>
+                    <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">{product.description}</p>
+                    <div className="mt-auto pt-4"><button onClick={() => { setSelectedProduct(product); setSelectedImage(product.image); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mb-2 w-full rounded-md border border-link px-3 py-2 text-sm font-semibold text-link hover:bg-link/10">Ver detalhes completos</button>{product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="block w-full rounded-md bg-primary px-3 py-2.5 text-center text-sm font-semibold text-primary-foreground hover:opacity-90">Comprar agora</a> : <button disabled className="w-full rounded-md bg-secondary px-3 py-2.5 text-sm text-muted-foreground">Em breve</button>}</div>
+                  </div>
+                </article>
+              ))}</div> : <div className="mt-4 rounded-md bg-card px-6 py-16 text-center shadow-sm"><Search size={28} className="mx-auto text-muted-foreground" /><h3 className="mt-3 text-lg font-semibold">Nenhum produto encontrado</h3><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-3 text-sm text-link hover:underline">Limpar filtros</button></div>}
+              <p className="mt-6 text-xs text-muted-foreground">Imagens ilustrativas. Especificações podem variar conforme a versão do produto. Pagamento realizado em página externa do vendedor.</p>
+            </>
+          )}
         </section>
       </main>
 
