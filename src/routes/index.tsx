@@ -37,7 +37,8 @@ type Product = {
   badge: string;
 };
 
-type Review = { id: string; name: string; rating: number; comment: string; date: string };
+type ReviewMedia = { name: string; type: string; dataUrl: string };
+type Review = { id: string; name: string; rating: number; comment: string; date: string; media?: ReviewMedia[] };
 
 const products: Product[] = [
   { id: 1, name: "Mini Aspirador Automotivo Portátil", price: 49.99, originalPrice: 79.99, category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/e3s5SpnqjSMG", badge: "PRATICIDADE" },
@@ -79,6 +80,8 @@ function Index() {
   const [reviewName, setReviewName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
+  const [reviewMedia, setReviewMedia] = useState<ReviewMedia[]>([]);
+  const [mediaError, setMediaError] = useState("");
 
   useEffect(() => {
     try {
@@ -100,6 +103,26 @@ function Index() {
     }
   }, [reviews, reviewsLoaded]);
 
+  const handleReviewMedia = (files: FileList | null) => {
+    if (!files?.length) return;
+    setMediaError("");
+    const selected = Array.from(files);
+    const allowed = selected.filter((file) => file.type.startsWith("image/") || file.type.startsWith("video/"));
+    if (allowed.length !== selected.length) setMediaError("Escolha apenas arquivos de imagem ou vídeo.");
+    const remaining = Math.max(0, 3 - reviewMedia.length);
+    const batch = allowed.slice(0, remaining);
+    if (allowed.length > remaining) setMediaError("Você pode anexar até 3 fotos ou vídeos por avaliação.");
+    const tooLarge = batch.filter((file) => file.size > 1024 * 1024);
+    if (tooLarge.length) setMediaError("Cada arquivo deve ter no máximo 1 MB para caber no armazenamento deste navegador.");
+    const valid = batch.filter((file) => file.size <= 1024 * 1024);
+    Promise.all(valid.map((file) => new Promise<ReviewMedia | null>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === "string" ? { name: file.name, type: file.type, dataUrl: reader.result } : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    }))).then((loaded) => setReviewMedia((current) => [...current, ...loaded.filter((item): item is ReviewMedia => item !== null)].slice(0, 3)));
+  };
+
   const submitReview = () => {
     if (!selectedProduct || !reviewName.trim() || !reviewText.trim()) return;
     const review: Review = {
@@ -108,11 +131,14 @@ function Index() {
       rating: reviewRating,
       comment: reviewText.trim().slice(0, 600),
       date: new Date().toLocaleDateString("pt-BR"),
+      media: reviewMedia,
     };
     setReviews((current) => ({ ...current, [selectedProduct.id]: [review, ...(current[selectedProduct.id] ?? [])] }));
     setReviewName("");
     setReviewText("");
     setReviewRating(5);
+    setReviewMedia([]);
+    setMediaError("");
   };
 
   const getRatingSummary = (productId: number) => {
@@ -220,10 +246,11 @@ function Index() {
                       <label className="block text-sm font-medium">Seu nome<input value={reviewName} onChange={(e) => setReviewName(e.target.value)} maxLength={60} placeholder="Como podemos te chamar?" className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary" /></label>
                       <div><span className="block text-sm font-medium">Sua nota</span><div className="mt-1 flex gap-1" role="radiogroup" aria-label="Escolha uma nota de 1 a 5 estrelas">{[1, 2, 3, 4, 5].map((rating) => <button key={rating} type="button" onClick={() => setReviewRating(rating)} aria-label={`${rating} estrela(s)`} aria-pressed={reviewRating === rating} className="rounded-md p-1 transition hover:scale-110"><Star size={25} className={rating <= reviewRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} /></button>)}</div></div>
                       <label className="block text-sm font-medium">Comentário<textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)} maxLength={600} rows={3} placeholder="Conte como foi sua experiência..." className="mt-1.5 w-full resize-y rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary" /></label>
+                      <div><label className="block text-sm font-medium">Adicionar fotos ou vídeos <span className="font-normal text-muted-foreground">(até 3 arquivos)</span><input type="file" accept="image/*,video/*" multiple onChange={(e) => { handleReviewMedia(e.target.files); e.currentTarget.value = ""; }} className="mt-2 block w-full cursor-pointer text-sm text-muted-foreground file:mr-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:font-semibold file:text-primary" /></label><p className="mt-1 text-xs text-muted-foreground">Imagens e vídeos de até 1 MB cada.</p>{mediaError && <p role="alert" className="mt-2 text-xs font-medium text-red-600">{mediaError}</p>}{reviewMedia.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{reviewMedia.map((media, index) => <div key={media.dataUrl} className="relative overflow-hidden rounded-xl border border-border bg-surface p-1">{media.type.startsWith("video/") ? <video src={media.dataUrl} controls className="aspect-square w-full rounded-lg object-contain" /> : <img src={media.dataUrl} alt={media.name} className="aspect-square w-full rounded-lg object-cover" />}<button type="button" onClick={() => setReviewMedia((current) => current.filter((_, i) => i !== index))} className="mt-1 w-full rounded-lg px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/5">Remover arquivo</button></div>)}</div>}</div>
                       <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs text-muted-foreground">{reviewText.length}/600 caracteres</span><button type="button" onClick={submitReview} disabled={!reviewName.trim() || !reviewText.trim()} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">Enviar avaliação</button></div>
                     </div>
                     <div className="mt-5 space-y-3 border-t border-border pt-4">
-                      {(reviews[selectedProduct.id] ?? []).length ? (reviews[selectedProduct.id] ?? []).map((review) => <article key={review.id} className="rounded-xl bg-surface p-3"><div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm">{review.name}</strong><span className="text-xs text-muted-foreground">{review.date}</span></div><div className="mt-1 flex gap-0.5" aria-label={`Nota ${review.rating} de 5`}>{[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} className={star <= review.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} />)}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-foreground/80">{review.comment}</p></article>) : <p className="rounded-xl bg-surface p-4 text-sm text-muted-foreground">Este produto ainda não tem avaliações. Seja o primeiro a avaliar!</p>}
+                      {(reviews[selectedProduct.id] ?? []).length ? (reviews[selectedProduct.id] ?? []).map((review) => <article key={review.id} className="rounded-xl bg-surface p-3"><div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm">{review.name}</strong><span className="text-xs text-muted-foreground">{review.date}</span></div><div className="mt-1 flex gap-0.5" aria-label={`Nota ${review.rating} de 5`}>{[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} className={star <= review.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} />)}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-foreground/80">{review.comment}</p>{review.media && review.media.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{review.media.map((media, index) => <div key={media.dataUrl} className="overflow-hidden rounded-xl border border-border bg-background">{media.type.startsWith("video/") ? <video src={media.dataUrl} controls preload="metadata" className="aspect-square w-full object-contain" /> : <img src={media.dataUrl} alt={`Foto ${index + 1} enviada por ${review.name}`} loading="lazy" className="aspect-square w-full object-cover" />}</div>)}</div>}</article>) : <p className="rounded-xl bg-surface p-4 text-sm text-muted-foreground">Este produto ainda não tem avaliações. Seja o primeiro a avaliar!</p>}
                     </div>
                     <p className="mt-3 text-[11px] text-muted-foreground">As avaliações ficam salvas neste navegador e não são compartilhadas automaticamente com outros visitantes.</p>
                   </section>
