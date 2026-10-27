@@ -185,7 +185,7 @@ function Index() {
         </div>
       </footer>
 
-      {notice && <div role="status" className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-2xl"><Check size={17} className="text-emerald-400}/>{notice}</div>}
+      {notice && <div role="status" className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-2xl"><Check size={17} className="text-emerald-400"/>{notice}</div>}
 
       {cartOpen && <div className="fixed inset-0 z-50">
         <button aria-label="Fechar carrinho" className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" onClick={() => setCartOpen(false)}/>
