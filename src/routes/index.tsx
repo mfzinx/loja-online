@@ -109,7 +109,7 @@ function Index() {
         </section>
       </main>
 
-      <footer className="border-t border-border bg-card"><div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-muted-foreground md:flex-row md:justify-between"><span>© {new Date().getFullYear()} Saliions Promo. Todos os direitos reservados.</span><a href="#inicio" className="text-link hover:underline">Voltar ao topo ↑</a></div></footer>
+      <footer className="bg-brand text-brand-foreground/70"><div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-7 text-xs md:flex-row md:items-center md:justify-between"><span className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-lg bg-citron text-brand"><ShoppingBag size={14} /></span>© {new Date().getFullYear()} Saliions Promo. Todos os direitos reservados.</span><a href="#inicio" className="font-semibold text-citron hover:underline">Voltar ao topo ↑</a></div></footer>
     </div>
   );
 }
