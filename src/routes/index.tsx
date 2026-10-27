@@ -46,42 +46,42 @@ function Index() {
 
   return (
     <div id="inicio" className="min-h-screen bg-surface text-foreground">
-      <header className="sticky top-0 z-30 bg-brand shadow-sm">
+      <header className="sticky top-0 z-30 bg-brand text-brand-foreground shadow-sm">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-          <a href="#inicio" className="flex shrink-0 items-center gap-2 text-brand-foreground">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-foreground/80 bg-background"><ShoppingBag size={20} className="text-link" /></span>
-            <span className="hidden leading-tight sm:block"><span className="block text-lg font-extrabold">saliions</span><span className="block text-xs font-semibold">promo</span></span>
+          <a href="#inicio" className="flex shrink-0 items-center gap-2.5">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-citron text-brand"><ShoppingBag size={20} /></span>
+            <span className="hidden font-display leading-none sm:block"><span className="block text-xl font-extrabold tracking-tight">saliions</span><span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.22em] text-citron">promo</span></span>
           </a>
-          <label className="flex flex-1 items-center rounded-sm bg-background shadow">
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar produtos, marcas e muito mais..." className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground" />
-            <span className="border-l border-border px-3 text-muted-foreground"><Search size={18} /></span>
+          <label className="flex flex-1 items-center rounded-full bg-background text-foreground shadow-lg shadow-black/10">
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar produtos, marcas e muito mais..." className="min-w-0 flex-1 bg-transparent px-5 py-2.5 text-sm outline-none placeholder:text-muted-foreground" />
+            <span className="m-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"><Search size={16} /></span>
           </label>
-          <div className="hidden items-center gap-1 text-sm text-brand-foreground md:flex"><Heart size={18} /> {favorites.length}</div>
+          <div className="hidden items-center gap-1.5 text-sm font-semibold md:flex"><Heart size={18} className="text-citron" /> {favorites.length}</div>
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto px-4 pb-2 text-sm text-brand-foreground/80">
-          {categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap hover:text-brand-foreground ${category === item ? "font-bold text-brand-foreground" : ""}`}>{item}</button>)}
+        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 text-sm">
+          {categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap rounded-full px-3.5 py-1.5 transition ${category === item ? "bg-citron font-bold text-brand" : "bg-white/10 hover:bg-white/20"}`}>{item}</button>)}
         </nav>
       </header>
 
       <main>
-        <section className="bg-gradient-to-b from-brand/40 to-surface">
+        <section className="bg-gradient-to-b from-citron/25 to-surface">
           <div className="mx-auto max-w-6xl px-4 pt-6">
-            <div className="relative overflow-hidden rounded-md bg-link text-primary-foreground">
-              <img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80" alt="Ofertas Saliions Promo" className="absolute inset-0 h-full w-full object-cover opacity-30" />
+            <div className="relative overflow-hidden rounded-3xl bg-brand text-brand-foreground">
+              <img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80" alt="Ofertas Saliions Promo" className="absolute inset-0 h-full w-full object-cover opacity-20" />
               <div className="relative px-6 py-10 sm:px-12 sm:py-14">
-                <span className="inline-flex items-center gap-1 rounded-sm bg-brand px-2 py-1 text-xs font-bold text-brand-foreground"><BadgePercent size={14} /> OFERTAS DO DIA</span>
-                <h1 className="mt-3 max-w-xl text-3xl font-bold sm:text-5xl">Boas escolhas, preços melhores</h1>
-                <p className="mt-2 max-w-md text-sm sm:text-base">Achadinhos para casa, beleza, pets, tecnologia e muito mais.</p>
-                <a href="#produtos" className="mt-5 inline-flex items-center gap-2 rounded-md bg-background px-5 py-2.5 text-sm font-semibold text-link hover:bg-secondary">Ver ofertas <ArrowRight size={16} /></a>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-citron px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-brand"><BadgePercent size={14} /> Ofertas do dia</span>
+                <h1 className="mt-4 max-w-xl font-display text-3xl font-extrabold leading-[1.05] sm:text-5xl">Boas escolhas, preços melhores</h1>
+                <p className="mt-3 max-w-md text-sm text-brand-foreground/80 sm:text-base">Achadinhos para casa, beleza, pets, tecnologia e muito mais.</p>
+                <a href="#produtos" className="mt-6 inline-flex items-center gap-2 rounded-full bg-citron px-6 py-3 text-sm font-bold text-brand transition hover:brightness-95">Ver ofertas <ArrowRight size={16} /></a>
               </div>
             </div>
           </div>
         </section>
 
         <section id="beneficios" className="mx-auto max-w-6xl px-4 pt-6">
-          <div className="grid gap-px overflow-hidden rounded-md bg-border shadow-sm sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-3">
             {[[Truck, "Envio a consultar", "Consulte as condições do vendedor"], [ShieldCheck, "Compra segura", "Confira os detalhes de cada produto"], [Check, "Compra direta", "Pagamento na página do vendedor"]].map(([Icon, t, d]) => { const I = Icon as typeof Truck; return (
-              <div key={t as string} className="flex items-center gap-3 bg-card p-4"><I size={28} className="text-link" /><span><strong className="block text-sm">{t as string}</strong><span className="text-xs text-muted-foreground">{d as string}</span></span></div>
+              <div key={t as string} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-card p-4"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"><I size={22} /></span><span><strong className="block text-sm">{t as string}</strong><span className="text-xs text-muted-foreground">{d as string}</span></span></div>
             ); })}
           </div>
         </section>
