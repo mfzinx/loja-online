@@ -290,7 +290,7 @@ function Index() {
         </section>
       </main>
 
-      <footer className="bg-brand"><div className="mx-auto max-w-6xl px-4 py-6"><div className="mb-4 rounded-xl border border-brand-foreground/15 bg-brand-foreground/5 p-4"><p className="text-sm font-semibold text-brand-foreground">Precisa de ajuda com sua compra?</p><p className="mt-1 text-xs leading-relaxed text-brand-foreground/70">Caso tenha problemas com a compra ou o envio, entre em contato com nosso fornecedor Kaiross para obter suporte.</p></div><div className="flex flex-col gap-2 text-xs text-brand-foreground/60 md:flex-row md:justify-between"><span>© {new Date().getFullYear()} Saliions Promo. Todos os direitos reservados.</span><a href="#inicio" className="font-semibold text-citron hover:underline">Voltar ao topo ↑</a></div></div></footer>
+      <footer className="bg-brand"><div className="mx-auto max-w-6xl px-4 py-6"><div className="mb-4 rounded-xl border border-brand-foreground/15 bg-brand-foreground/5 p-4"><p className="text-sm font-semibold text-brand-foreground">Precisa de ajuda com sua compra?</p><p className="mt-1 text-xs leading-relaxed text-brand-foreground/70">Caso tenha problemas com a compra ou o envio, entre em contato com nosso fornecedor para obter suporte.</p></div><div className="flex flex-col gap-2 text-xs text-brand-foreground/60 md:flex-row md:justify-between"><span>© {new Date().getFullYear()} Saliions Promo. Todos os direitos reservados.</span><a href="#inicio" className="font-semibold text-citron hover:underline">Voltar ao topo ↑</a></div></div></footer>
     </div>
   );
 }
