@@ -87,24 +87,24 @@ function Index() {
         </section>
 
         <section id="produtos" className="mx-auto max-w-6xl px-4 py-8">
-          <div className="flex items-baseline gap-3"><h2 className="text-2xl font-normal text-foreground/80">Ofertas para você</h2><span className="text-sm text-link">{visibleProducts.length} produtos</span></div>
-          {visibleProducts.length ? <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">{visibleProducts.map((product) => (
-            <article key={product.id} className="group flex flex-col overflow-hidden rounded-md bg-card shadow-sm transition hover:shadow-lg">
-              <div className="relative border-b border-border bg-card p-3">
-                <img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className="aspect-square w-full rounded object-cover" />
-                <button onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-background/90 text-link opacity-90 shadow" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></button>
+          <div className="flex items-end justify-between gap-3 border-b border-border pb-3"><h2 className="font-display text-2xl font-extrabold tracking-tight">Ofertas para você</h2><span className="shrink-0 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{visibleProducts.length} produtos</span></div>
+          {visibleProducts.length ? <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleProducts.map((product) => (
+            <article key={product.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
+              <div className="relative bg-secondary p-3">
+                <img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className="aspect-[4/3] w-full rounded-xl object-cover" />
+                <span className="absolute left-5 top-5 rounded-full bg-citron px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-brand">{product.badge}</span>
+                <button onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-background text-primary shadow transition hover:scale-105" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></button>
               </div>
-              <div className="flex flex-1 flex-col p-4">
-                <span className="w-fit rounded-sm bg-link px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground">{product.badge}</span>
-                <h3 className="mt-2 line-clamp-2 text-sm font-normal leading-snug text-foreground/90">{product.name}</h3>
-                <span className="mt-1 text-xs text-muted-foreground">{product.category}</span>
-                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-success"><Truck size={14} /> Envio a consultar</span>
-                <button onClick={() => setExpanded((c) => toggle(c, product.id))} className="mt-2 w-fit text-xs text-link hover:underline">{expanded.includes(product.id) ? "Ocultar detalhes" : "Ver detalhes"}</button>
-                {expanded.includes(product.id) && <div className="mt-2 text-xs text-muted-foreground"><p>{product.description}</p><ul className="mt-2 list-disc space-y-1 pl-4">{product.details.map((d) => <li key={d}>{d}</li>)}</ul></div>}
-                <div className="mt-auto pt-4">{product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" className="block w-full rounded-md bg-primary px-3 py-2.5 text-center text-sm font-semibold text-primary-foreground hover:opacity-90">Comprar agora</a> : <button disabled className="w-full rounded-md bg-secondary px-3 py-2.5 text-sm text-muted-foreground">Em breve</button>}</div>
+              <div className="flex flex-1 flex-col p-5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{product.category}</span>
+                <h3 className="mt-1.5 font-display text-base font-bold leading-snug">{product.name}</h3>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-success"><Truck size={14} /> Envio a consultar</span>
+                <button onClick={() => setExpanded((c) => toggle(c, product.id))} className="mt-2 w-fit text-xs font-semibold text-primary hover:underline">{expanded.includes(product.id) ? "Ocultar detalhes" : "Ver detalhes"}</button>
+                {expanded.includes(product.id) && <div className="mt-2 rounded-xl bg-secondary/70 p-3 text-xs text-muted-foreground"><p>{product.description}</p><ul className="mt-2 list-disc space-y-1 pl-4">{product.details.map((d) => <li key={d}>{d}</li>)}</ul></div>}
+                <div className="mt-auto pt-5">{product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition hover:bg-primary/90">Comprar agora <ArrowRight size={15} /></a> : <button disabled className="w-full rounded-full bg-secondary px-4 py-3 text-sm text-muted-foreground">Em breve</button>}</div>
               </div>
             </article>
-          ))}</div> : <div className="mt-4 rounded-md bg-card px-6 py-16 text-center shadow-sm"><Search size={28} className="mx-auto text-muted-foreground" /><h3 className="mt-3 text-lg font-semibold">Nenhum produto encontrado</h3><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-3 text-sm text-link hover:underline">Limpar filtros</button></div>}
+          ))}</div> : <div className="mt-5 rounded-3xl border border-border bg-card px-6 py-16 text-center shadow-sm"><Search size={28} className="mx-auto text-muted-foreground" /><h3 className="mt-3 font-display text-lg font-bold">Nenhum produto encontrado</h3><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-3 text-sm font-semibold text-primary hover:underline">Limpar filtros</button></div>}
           <p className="mt-6 text-xs text-muted-foreground">Imagens ilustrativas. Especificações podem variar conforme a versão do produto. Pagamento realizado em página externa do vendedor.</p>
         </section>
       </main>
