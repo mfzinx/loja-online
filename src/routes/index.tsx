@@ -62,7 +62,7 @@ function Index() {
           </label>
           <div className="hidden items-center gap-1.5 text-sm font-semibold md:flex"><Heart size={18} className="text-citron" /> {favorites.length}</div>
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 text-sm">
+        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 text-sm [mask-image:linear-gradient(to_right,black_90%,transparent)]">
           {categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap rounded-full px-3.5 py-1.5 transition ${category === item ? "bg-citron font-bold text-brand" : "bg-white/10 hover:bg-white/20"}`}>{item}</button>)}
         </nav>
       </header>
