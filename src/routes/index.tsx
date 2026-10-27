@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
 
 import coposInox from "@/assets/copos-inox.jpg";
 import kitFerramentas from "@/assets/kit-ferramentas.jpg";
@@ -37,6 +37,8 @@ type Product = {
   badge: string;
 };
 
+type Review = { id: string; name: string; rating: number; comment: string; date: string };
+
 const products: Product[] = [
   { id: 1, name: "Mini Aspirador Automotivo Portátil", price: 49.99, originalPrice: 79.99, category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/e3s5SpnqjSMG", badge: "PRATICIDADE" },
   { id: 2, name: "Conjunto com 10 Copos de Inox 175 ml", price: 109.95, originalPrice: 139.95, category: "Casa e cozinha", description: "Conjunto de copos em aço inox com acabamento hexagonal martelado e parede dupla, uma opção elegante para servir café, chá e outras bebidas.", details: ["10 copos em aço inox", "Capacidade: 175 ml cada", "Altura: 8,5 cm", "Boca: 6,5 cm; base: 5,5 cm"], image: coposInox, paymentUrl: "https://pay.kaiross.com.br/2KXXPAtSF7C1", badge: "KIT COM 10" },
@@ -72,6 +74,51 @@ function Index() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
+  const [reviews, setReviews] = useState<Record<number, Review[]>>({});
+  const [reviewsLoaded, setReviewsLoaded] = useState(false);
+  const [reviewName, setReviewName] = useState("");
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem("saliions-promo-reviews");
+      if (saved) setReviews(JSON.parse(saved) as Record<number, Review[]>);
+    } catch (error) {
+      console.error("Não foi possível carregar as avaliações salvas.", error);
+    } finally {
+      setReviewsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!reviewsLoaded) return;
+    try {
+      window.localStorage.setItem("saliions-promo-reviews", JSON.stringify(reviews));
+    } catch (error) {
+      console.error("Não foi possível salvar as avaliações.", error);
+    }
+  }, [reviews, reviewsLoaded]);
+
+  const submitReview = () => {
+    if (!selectedProduct || !reviewName.trim() || !reviewText.trim()) return;
+    const review: Review = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      name: reviewName.trim().slice(0, 60),
+      rating: reviewRating,
+      comment: reviewText.trim().slice(0, 600),
+      date: new Date().toLocaleDateString("pt-BR"),
+    };
+    setReviews((current) => ({ ...current, [selectedProduct.id]: [review, ...(current[selectedProduct.id] ?? [])] }));
+    setReviewName("");
+    setReviewText("");
+    setReviewRating(5);
+  };
+
+  const getRatingSummary = (productId: number) => {
+    const productReviews = reviews[productId] ?? [];
+    return { count: productReviews.length, average: productReviews.length ? productReviews.reduce((sum, review) => sum + review.rating, 0) / productReviews.length : 0 };
+  };
 
   const visibleProducts = useMemo(() => products.filter((product) =>
     (category === "Todos" || product.category === category) &&
@@ -164,6 +211,22 @@ function Index() {
                   <div className="mt-7 rounded-2xl bg-surface p-4"><p className="text-sm font-semibold">Compra e entrega</p><p className="mt-1 text-sm text-muted-foreground">Preço, pagamento, disponibilidade e condições de entrega são apresentados pelo vendedor na página de compra.</p>
                     {selectedProduct.paymentUrl ? <a href={selectedProduct.paymentUrl} target="_blank" rel="noreferrer" className="mt-4 block w-full rounded-full bg-primary px-4 py-3 text-center font-semibold text-primary-foreground transition hover:bg-primary/90">Comprar agora <ArrowRight className="ml-1 inline" size={17} /></a> : <button disabled className="mt-4 w-full rounded-full bg-secondary px-4 py-3 text-muted-foreground">Em breve</button>}
                   </div>
+                  <section className="mt-6 rounded-2xl border border-border p-4 sm:p-5">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div><h3 className="font-display text-lg font-semibold">Avaliações dos clientes</h3><p className="mt-1 text-sm text-muted-foreground">Compartilhe sua opinião sobre este produto.</p></div>
+                      {getRatingSummary(selectedProduct.id).count > 0 && <div className="text-right"><div className="flex items-center justify-end gap-1 font-bold"><Star size={17} className="fill-amber-400 text-amber-400" /> {getRatingSummary(selectedProduct.id).average.toFixed(1).replace(".", ",")}/5</div><p className="text-xs text-muted-foreground">{getRatingSummary(selectedProduct.id).count} avaliação(ões)</p></div>}
+                    </div>
+                    <div className="mt-4 space-y-3">
+                      <label className="block text-sm font-medium">Seu nome<input value={reviewName} onChange={(e) => setReviewName(e.target.value)} maxLength={60} placeholder="Como podemos te chamar?" className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary" /></label>
+                      <div><span className="block text-sm font-medium">Sua nota</span><div className="mt-1 flex gap-1" role="radiogroup" aria-label="Escolha uma nota de 1 a 5 estrelas">{[1, 2, 3, 4, 5].map((rating) => <button key={rating} type="button" onClick={() => setReviewRating(rating)} aria-label={`${rating} estrela(s)`} aria-pressed={reviewRating === rating} className="rounded-md p-1 transition hover:scale-110"><Star size={25} className={rating <= reviewRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} /></button>)}</div></div>
+                      <label className="block text-sm font-medium">Comentário<textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)} maxLength={600} rows={3} placeholder="Conte como foi sua experiência..." className="mt-1.5 w-full resize-y rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary" /></label>
+                      <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs text-muted-foreground">{reviewText.length}/600 caracteres</span><button type="button" onClick={submitReview} disabled={!reviewName.trim() || !reviewText.trim()} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">Enviar avaliação</button></div>
+                    </div>
+                    <div className="mt-5 space-y-3 border-t border-border pt-4">
+                      {(reviews[selectedProduct.id] ?? []).length ? (reviews[selectedProduct.id] ?? []).map((review) => <article key={review.id} className="rounded-xl bg-surface p-3"><div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm">{review.name}</strong><span className="text-xs text-muted-foreground">{review.date}</span></div><div className="mt-1 flex gap-0.5" aria-label={`Nota ${review.rating} de 5`}>{[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} className={star <= review.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} />)}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-foreground/80">{review.comment}</p></article>) : <p className="rounded-xl bg-surface p-4 text-sm text-muted-foreground">Este produto ainda não tem avaliações. Seja o primeiro a avaliar!</p>}
+                    </div>
+                    <p className="mt-3 text-[11px] text-muted-foreground">As avaliações ficam salvas neste navegador e não são compartilhadas automaticamente com outros visitantes.</p>
+                  </section>
                 </div>
               </div>
             </div>
@@ -183,6 +246,7 @@ function Index() {
                   <div className="flex flex-1 flex-col gap-1.5 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">{product.category}</p>
                     <button onClick={() => openProduct(product)} className="text-left font-display text-[15px] font-semibold leading-snug transition group-hover:text-primary">{product.name}</button>
+                    {getRatingSummary(product.id).count > 0 && <div className="flex items-center gap-1 text-xs text-muted-foreground"><Star size={13} className="fill-amber-400 text-amber-400" /><span className="font-semibold">{getRatingSummary(product.id).average.toFixed(1).replace(".", ",")}</span><span>({getRatingSummary(product.id).count})</span></div>}
                     {product.price !== undefined && <div className="mt-1 flex flex-wrap items-baseline gap-2"><span className="text-xs text-muted-foreground line-through">{(product.originalPrice ?? product.price + 30).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span><span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">OFERTA</span><p className="font-display text-xl font-bold text-primary">{product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p></div>}
                     <p className="line-clamp-2 text-xs text-muted-foreground">{product.description}</p>
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-xs font-semibold text-success"><Truck size={14} /> Envio a consultar</span>
