@@ -1,9 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  ArrowRight, BadgePercent, Check, ChevronDown, Heart, Menu, PackageCheck,
-  Search, ShieldCheck, ShoppingBag, Sparkles, Truck, X, Plus, Minus,
-} from "lucide-react";
+import { ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck, ShoppingBag, Sparkles, Truck } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -11,192 +8,66 @@ type Product = {
   id: number;
   name: string;
   category: string;
-  price: number;
-  oldPrice: number;
-  badge: string;
+  description: string;
+  details: string[];
   image: string;
-  rating: string;
+  paymentUrl?: string;
+  badge: string;
 };
 
 const products: Product[] = [
-  { id: 1, name: "Fone Bluetooth Pro", category: "Eletrônicos", price: 89.9, oldPrice: 149.9, badge: "MAIS VENDIDO", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85", rating: "4.9" },
-  { id: 2, name: "Relógio Minimalista", category: "Acessórios", price: 119.9, oldPrice: 189.9, badge: "OFERTA", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85", rating: "4.8" },
-  { id: 3, name: "Óculos Urban Style", category: "Acessórios", price: 49.9, oldPrice: 89.9, badge: "−44%", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85", rating: "4.7" },
-  { id: 4, name: "Bolsa Everyday", category: "Moda", price: 79.9, oldPrice: 129.9, badge: "OFERTA", image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=85", rating: "4.9" },
-  { id: 5, name: "Garrafa Térmica", category: "Casa", price: 39.9, oldPrice: 69.9, badge: "−43%", image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85", rating: "4.8" },
-  { id: 6, name: "Tênis Casual", category: "Moda", price: 139.9, oldPrice: 219.9, badge: "QUERIDINHO", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85", rating: "4.9" },
-  { id: 7, name: "Luminária de Mesa", category: "Casa", price: 64.9, oldPrice: 99.9, badge: "OFERTA", image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85", rating: "4.6" },
-  { id: 8, name: "Mini Speaker", category: "Eletrônicos", price: 59.9, oldPrice: 99.9, badge: "−40%", image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=85", rating: "4.8" },
+  { id: 1, name: "Mini Aspirador Automotivo Portátil", category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=85", badge: "PRATICIDADE" },
+  { id: 2, name: "Conjunto com 10 Copos de Inox 175 ml", category: "Casa e cozinha", description: "Conjunto de copos em aço inox com acabamento hexagonal martelado e parede dupla, uma opção elegante para servir café, chá e outras bebidas.", details: ["10 copos em aço inox", "Capacidade: 175 ml cada", "Altura: 8,5 cm", "Boca: 6,5 cm; base: 5,5 cm"], image: "https://images.unsplash.com/photo-1514228742587-6b1558f0f93a?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/qVSEg6zQPlds", badge: "KIT COM 10" },
+  { id: 3, name: "Jogo de Ferramentas com 46 Peças e Maleta", category: "Ferramentas", description: "Kit compacto para pequenos reparos e tarefas do dia a dia, com soquetes, bits, catraca, extensões e acessórios organizados em uma maleta.", details: ["45 ferramentas e 1 maleta", "Encaixe informado: 1/4 polegada", "Maleta: 24 × 13 × 5 cm", "Material informado: aço e termoplástico"], image: "https://images.unsplash.com/photo-1581147036324-c1c89c2c8b5c?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/smydxoUcFkjr", badge: "46 PEÇAS" },
+  { id: 4, name: "Escova Secadora para Pets AJ-U07", category: "Pets", description: "Escova secadora 2 em 1 que combina escovação e secagem para ajudar nos cuidados com cães e gatos.", details: ["Cerdas com pontas protegidas, conforme descrição", "Medidas informadas: 12 × 23 cm", "Voltagem informada: 110 V — não bivolt", "Use com cuidado e siga as instruções do fabricante"], image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=85", badge: "CUIDADO PET" },
+  { id: 5, name: "Kit com 2 Joelheiras de Compressão", category: "Esporte e bem-estar", description: "Joelheiras elásticas para suporte e compressão durante atividades cotidianas ou exercícios, conforme a necessidade individual.", details: ["Kit com 2 unidades", "Cores: verde e preto", "Tamanho único informado", "Medidas informadas: 27 × 17 cm; confira o ajuste antes de comprar"], image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=85", badge: "KIT COM 2" },
+  { id: 6, name: "Câmera Lâmpada Wi-Fi 360° Full HD", category: "Eletrônicos e segurança", description: "Câmera em formato de lâmpada com conectividade Wi-Fi, visualização remota e recursos de monitoramento descritos pelo fornecedor.", details: ["Resolução anunciada: 1080p / 2 MP", "Wi-Fi 2,4 GHz", "Movimento informado: 355° horizontal / 100° vertical", "MicroSD até 128 GB informado; proteção IP44", "Confirme compatibilidade e requisitos do aplicativo"], image: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=900&q=85", badge: "CASA CONECTADA" },
+  { id: 7, name: "Caixa de Som Boombox 3 Preta", category: "Áudio", description: "Caixa de som portátil de visual robusto para ouvir música em casa ou em encontros. Confira a versão exata e os recursos disponíveis antes da compra.", details: ["Bluetooth 5.1 informado", "Alimentação informada: 100–240 V", "Autonomia anunciada na descrição: cerca de 5 horas", "Cartão SD, USB e rádio FM precisam ser confirmados para a versão ofertada", "Não presumimos que seja produto original de uma marca específica"], image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=85", badge: "SOM PORTÁTIL" },
+  { id: 8, name: "Kit com 2 Rádios Comunicadores BF-777S", category: "Eletrônicos", description: "Par de rádios comunicadores portáteis para comunicação em atividades ao ar livre, trabalho e passeios, sujeito às regras locais de uso de radiofrequência.", details: ["Kit com 2 rádios e acessórios descritos", "16 canais informados", "Bateria informada: 1500 mAh", "Alcance real varia conforme terreno e obstáculos", "Verifique homologação e regras aplicáveis da Anatel"], image: "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=900&q=85", badge: "KIT COM 2" },
+  { id: 9, name: "Robô Aspirador de Pó Recarregável", category: "Casa e limpeza", description: "Robô compacto para ajudar na manutenção diária de poeira e sujeiras leves, com perfil baixo para alcançar alguns espaços sob móveis.", details: ["Potência informada: 18 W; sucção anunciada: 2800 Pa", "Depósito de pó: 0,3 L", "Bateria: 1200 mAh; autonomia anunciada de até 60 min", "Tempo de carga informado: 4 horas", "Dimensões: 30 × 30 × 7,8 cm", "Voltagem informada: 110 V"], image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=900&q=85", badge: "LIMPEZA PRÁTICA" },
+  { id: 10, name: "Mini Calibrador Compressor Elétrico Portátil", category: "Automotivo", description: "Bomba de ar portátil recarregável para ajudar a calibrar pneus e inflar itens compatíveis durante viagens ou no uso diário.", details: ["Potência informada: 50 W; corrente: 10 A", "Fluxo de ar anunciado: 25 L/min", "Alimentação USB-C, 5 V", "Quatro modos informados: carro, bicicleta, veículo elétrico e bola", "Dimensões aproximadas: 13,7 × 8,9 × 4,7 cm", "Confirme pressão máxima e compatibilidade antes do uso"], image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=85", badge: "PORTÁTIL" },
+  { id: 11, name: "Caneta Depiladora Elétrica para Sobrancelhas", category: "Beleza e cuidados", description: "Mini depilador facial em formato de caneta, com luz LED integrada para ajudar a visualizar os pelos durante o cuidado com a região das sobrancelhas.", details: ["Recarregável por USB", "Luz LED na ponta", "Potência informada: 2 W", "Autonomia anunciada: até 45 minutos", "Tempo de carga informado: 8 horas", "Cores sortidas conforme disponibilidade"], image: "https://images.unsplash.com/photo-1583241800698-e8ab01830a38?auto=format&fit=crop&w=900&q=85", badge: "BELEZA PRÁTICA" },
 ];
 
-const categories = ["Todos", "Eletrônicos", "Acessórios", "Moda", "Casa"];
-const money = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const categories = ["Todos", ...Array.from(new Set(products.map((product) => product.category)))];
 
 function Index() {
   const [category, setCategory] = useState("Todos");
   const [search, setSearch] = useState("");
-  const [cart, setCart] = useState<Record<number, number>>({});
-  const [cartOpen, setCartOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
-  const [notice, setNotice] = useState("");
-
+  const [expanded, setExpanded] = useState<number[]>([]);
   const visibleProducts = useMemo(() => products.filter((product) =>
     (category === "Todos" || product.category === category) &&
-    product.name.toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))
+    (product.name + " " + product.description + " " + product.category).toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))
   ), [category, search]);
 
-  const cartCount = Object.values(cart).reduce((sum, count) => sum + count, 0);
-  const cartItems = products.filter((product) => (cart[product.id] || 0) > 0);
-  const cartTotal = cartItems.reduce((sum, product) => sum + product.price * cart[product.id], 0);
-
-  function addToCart(product: Product) {
-    setCart((current) => ({ ...current, [product.id]: (current[product.id] || 0) + 1 }));
-    setNotice(product.name + " adicionado ao carrinho!");
-    window.setTimeout(() => setNotice(""), 2200);
-  }
-
-  function changeQuantity(id: number, amount: number) {
-    setCart((current) => {
-      const next = { ...current, [id]: (current[id] || 0) + amount };
-      if (next[id] <= 0) delete next[id];
-      return next;
-    });
-  }
-
   return (
-    <div className="store-shell min-h-screen bg-white text-slate-950">
-      <div className="bg-slate-950 px-4 py-2.5 text-center text-xs font-medium tracking-wide text-white sm:text-sm">
-        <span className="inline-flex items-center justify-center gap-2"><Sparkles size={14} className="text-amber-300" /> OFERTAS QUE VALEM A PENA — até 50% OFF em produtos selecionados <ArrowRight size={14} /></span>
-      </div>
-
-      <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <button className="flex items-center gap-2 text-left" onClick={() => { setCategory("Todos"); setSearch(""); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label="Ir para o início">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-400 text-slate-950"><ShoppingBag size={21} strokeWidth={2.5} /></span>
-            <span><span className="block text-xl font-black leading-none tracking-tight">saliions<span className="text-amber-500">.</span></span><span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">promo</span></span>
-          </button>
-
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-600 md:flex">
-            <a href="#ofertas" className="transition hover:text-amber-600">Ofertas</a>
-            <a href="#produtos" className="transition hover:text-amber-600">Produtos</a>
-            <a href="#beneficios" className="transition hover:text-amber-600">Por que comprar aqui?</a>
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <label className="hidden items-center gap-2 rounded-full bg-slate-100 px-4 py-2.5 lg:flex">
-              <Search size={17} className="text-slate-400" />
-              <input value={search} onChange={(event) => { setSearch(event.target.value); document.getElementById("produtos")?.scrollIntoView({ behavior: "smooth" }); }} placeholder="Buscar produtos..." className="w-36 bg-transparent text-sm outline-none placeholder:text-slate-400 xl:w-48" />
-            </label>
-            <button onClick={() => setMenuOpen(!menuOpen)} className="rounded-full p-2.5 hover:bg-slate-100 md:hidden" aria-label="Abrir menu"><Menu size={21} /></button>
-            <button onClick={() => setCartOpen(true)} className="relative flex items-center gap-2 rounded-full bg-slate-950 px-3.5 py-2.5 text-sm font-bold text-white transition hover:bg-amber-500 hover:text-slate-950 sm:px-4" aria-label="Abrir carrinho">
-              <ShoppingBag size={18} /><span className="hidden sm:inline">Carrinho</span>
-              {cartCount > 0 && <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-400 px-1 text-[11px] font-black text-slate-950">{cartCount}</span>}
-            </button>
-          </div>
-        </div>
-        {menuOpen && <div className="border-t border-slate-100 px-5 py-4 md:hidden"><div className="grid gap-3 text-sm font-semibold"><a href="#ofertas" onClick={() => setMenuOpen(false)}>Ofertas</a><a href="#produtos" onClick={() => setMenuOpen(false)}>Produtos</a><a href="#beneficios" onClick={() => setMenuOpen(false)}>Por que comprar aqui?</a><label className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2"><Search size={16}/><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar produtos..." className="w-full bg-transparent outline-none"/></label></div></div>}
-      </header>
-
-      <main>
-        <section id="ofertas" className="relative overflow-hidden bg-[#f7f5f0]">
-          <div className="pointer-events-none absolute -right-24 -top-32 h-96 w-96 rounded-full bg-amber-300/30 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-orange-200/40 blur-3xl" />
-          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
-            <div className="max-w-2xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white/80 px-3.5 py-2 text-xs font-extrabold uppercase tracking-[0.13em] text-amber-700"><BadgePercent size={15}/> Achadinhos da semana</span>
-              <h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-tight text-slate-950 sm:text-5xl lg:text-7xl">Boas escolhas.<br/><span className="text-amber-500">Preços melhores.</span></h1>
-              <p className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg">Produtos que facilitam seu dia a dia, estilo que combina com você e ofertas que cabem no bolso.</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#produtos" className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-amber-500 hover:text-slate-950">Ver ofertas <ArrowRight size={17}/></a>
-                <a href="#beneficios" className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white/60 px-6 py-3.5 text-sm font-bold text-slate-800 transition hover:bg-white">Conheça a loja</a>
-              </div>
-              <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3 text-xs font-semibold text-slate-500 sm:text-sm">
-                <span className="inline-flex items-center gap-2"><Check size={16} className="text-emerald-600"/> Seleção especial</span>
-                <span className="inline-flex items-center gap-2"><Check size={16} className="text-emerald-600"/> Preços acessíveis</span>
-                <span className="inline-flex items-center gap-2"><Check size={16} className="text-emerald-600"/> Compra simples</span>
-              </div>
-            </div>
-            <div className="relative mx-auto w-full max-w-xl">
-              <div className="absolute -left-3 top-8 z-10 rounded-2xl bg-white p-4 shadow-xl shadow-slate-900/10 sm:-left-7">
-                <span className="block text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-400">Ofertas de até</span>
-                <span className="mt-1 block text-3xl font-black tracking-tight text-slate-950">50% <span className="text-amber-500">OFF</span></span>
-              </div>
-              <div className="overflow-hidden rounded-[2rem] bg-slate-200 shadow-2xl shadow-slate-900/10">
-                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=90" alt="Interior de loja moderna com produtos selecionados" className="h-[340px] w-full object-cover sm:h-[440px]" />
-              </div>
-              <div className="absolute -bottom-4 right-3 flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-xl shadow-slate-900/10 sm:-right-4 sm:p-4">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-100 text-amber-700"><ShoppingBag size={22}/></span>
-                <span><span className="block text-sm font-extrabold text-slate-900">Seu próximo achado</span><span className="mt-0.5 block text-xs text-slate-500">está a um clique de distância</span></span>
-              </div>
-            </div>
-          </div>
+    <div className="min-h-screen bg-white text-slate-950">
+      <div className="bg-slate-950 px-4 py-2.5 text-center text-xs font-semibold tracking-wide text-white sm:text-sm"><span className="inline-flex items-center justify-center gap-2"><Sparkles size={14} className="text-amber-300" /> ACHADINHOS E OFERTAS PARA O DIA A DIA <ArrowRight size={14} /></span></div>
+      <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/95 backdrop-blur"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <a href="#inicio" className="flex items-center gap-2"><span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-400 text-slate-950"><ShoppingBag size={21} strokeWidth={2.5} /></span><span><span className="block text-xl font-black leading-none tracking-tight">saliions<span className="text-amber-500">.</span></span><span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">promo</span></span></a>
+        <nav className="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex"><a href="#produtos" className="hover:text-amber-600">Produtos</a><a href="#beneficios" className="hover:text-amber-600">Sobre a loja</a></nav>
+        <label className="flex min-w-0 items-center gap-2 rounded-full bg-slate-100 px-3 py-2.5 sm:px-4"><Search size={17} className="shrink-0 text-slate-400" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar produtos..." className="w-28 min-w-0 bg-transparent text-sm outline-none placeholder:text-slate-400 sm:w-48" /></label>
+      </div></header>
+      <main id="inicio">
+        <section className="relative overflow-hidden bg-[#f7f5f0]"><div className="pointer-events-none absolute -right-24 -top-32 h-96 w-96 rounded-full bg-amber-300/30 blur-3xl" /><div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
+          <div className="max-w-2xl"><span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white/80 px-3.5 py-2 text-xs font-extrabold uppercase tracking-[0.13em] text-amber-700"><BadgePercent size={15}/> Seleção Saliions Promo</span><h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-tight sm:text-5xl lg:text-7xl">Boas escolhas.<br/><span className="text-amber-500">Preços melhores.</span></h1><p className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg">Produtos práticos para casa, beleza, pets, tecnologia e muito mais. Encontre seu próximo achadinho.</p><a href="#produtos" className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-amber-400 hover:text-slate-950">Explorar produtos <ArrowRight size={17}/></a><div className="mt-8 flex flex-wrap gap-4 text-xs font-semibold text-slate-500 sm:text-sm"><span className="inline-flex items-center gap-2"><Check size={16} className="text-emerald-600"/> Catálogo atualizado</span><span className="inline-flex items-center gap-2"><Check size={16} className="text-emerald-600"/> Compra direta quando disponível</span></div></div>
+          <div className="relative mx-auto w-full max-w-xl"><div className="absolute -left-2 top-8 z-10 rounded-2xl bg-white p-4 shadow-xl sm:-left-6"><span className="block text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-400">Descubra</span><span className="mt-1 block text-2xl font-black text-slate-950">seu próximo<br/><span className="text-amber-500">achadinho</span></span></div><div className="overflow-hidden rounded-[2rem] bg-slate-200 shadow-2xl"><img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1200&q=90" alt="Seleção de produtos e compras" className="h-[300px] w-full object-cover sm:h-[420px]"/></div><div className="absolute -bottom-4 right-2 rounded-2xl bg-white p-4 shadow-xl sm:-right-4"><span className="block text-sm font-extrabold">Saliions Promo</span><span className="text-xs text-slate-500">Boas escolhas para o seu dia</span></div></div>
+        </div></section>
+        <section id="beneficios" className="border-b border-slate-100 bg-white"><div className="mx-auto grid max-w-7xl gap-5 px-4 py-7 sm:grid-cols-3 sm:px-6 lg:px-8"><div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><Truck size={21}/></span><span><strong className="block text-sm font-extrabold">Envio a consultar</strong><span className="text-xs text-slate-500">Consulte as condições do vendedor</span></span></div><div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><ShieldCheck size={21}/></span><span><strong className="block text-sm font-extrabold">Informações claras</strong><span className="text-xs text-slate-500">Confira os detalhes de cada produto</span></span></div><div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><ShoppingBag size={21}/></span><span><strong className="block text-sm font-extrabold">Compra direta</strong><span className="text-xs text-slate-500">Pagamento externo quando o link estiver disponível</span></span></div></div></section>
+        <section id="produtos" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8"><div><span className="text-xs font-extrabold uppercase tracking-[0.2em] text-amber-600">Catálogo</span><h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Produtos em destaque<span className="text-amber-500">.</span></h2><p className="mt-2 text-sm text-slate-500 sm:text-base">Veja detalhes, encontre o que precisa e acesse o pagamento quando o link estiver confirmado.</p></div>
+          <div className="mt-7 flex gap-2 overflow-x-auto pb-2">{categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-bold transition ${category === item ? "bg-slate-950 text-white" : "bg-slate-100 text-slate-600 hover:bg-amber-100 hover:text-slate-950"}`}>{item}</button>)}</div>
+          {visibleProducts.length ? <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{visibleProducts.map((product) => <article key={product.id} className="group overflow-hidden rounded-3xl border border-slate-100 bg-white transition hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-slate-900/5">
+            <div className="relative overflow-hidden bg-slate-100"><img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"/><span className="absolute left-3 top-3 rounded-full bg-amber-400 px-3 py-1.5 text-[10px] font-black tracking-wide text-slate-950">{product.badge}</span><button onClick={() => setFavorites((current) => current.includes(product.id) ? current.filter((id) => id !== product.id) : [...current, product.id])} className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 transition hover:scale-110 ${favorites.includes(product.id) ? "text-rose-500" : "text-slate-600"}`} aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={17} fill={favorites.includes(product.id) ? "currentColor" : "none"}/></button></div>
+            <div className="p-5"><span className="text-[10px] font-bold uppercase tracking-[0.12em] text-amber-700">{product.category}</span><h3 className="mt-1.5 text-lg font-extrabold leading-snug text-slate-900">{product.name}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{product.description}</p><button onClick={() => setExpanded((current) => current.includes(product.id) ? current.filter((id) => id !== product.id) : [...current, product.id])} className="mt-3 text-sm font-bold text-slate-800 underline decoration-amber-400 underline-offset-4">{expanded.includes(product.id) ? "Ocultar ficha técnica" : "Ver ficha técnica"}</button>
+              {expanded.includes(product.id) && <ul className="mt-3 list-disc space-y-1 pl-5 text-sm leading-5 text-slate-600">{product.details.map((detail) => <li key={detail}>{detail}</li>)}</ul>}
+              <div className="mt-5 border-t border-slate-100 pt-4">{product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 text-sm font-extrabold text-slate-950 transition hover:bg-amber-300">Comprar agora <ArrowRight size={17}/></a> : <button disabled className="w-full cursor-not-allowed rounded-xl bg-slate-100 px-4 py-3.5 text-sm font-bold text-slate-500">Link de compra em confirmação</button>}<p className="mt-2 text-center text-xs text-slate-400">{product.paymentUrl ? "Pagamento em página externa do vendedor" : "Preço e link de pagamento ainda não informados"}</p></div>
+            </div></article>)}</div> : <div className="mt-8 rounded-3xl border border-dashed border-slate-200 px-6 py-16 text-center"><Search size={28} className="mx-auto text-slate-300"/><h3 className="mt-3 text-lg font-bold">Nenhum produto encontrado</h3><p className="mt-1 text-sm text-slate-500">Tente outra busca ou categoria.</p><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-4 font-bold text-amber-700 underline">Limpar filtros</button></div>}
+          <p className="mt-8 text-xs leading-5 text-slate-400">Imagens ilustrativas. Especificações e recursos foram organizados a partir das descrições recebidas e podem variar conforme a versão do produto. Preços não foram exibidos porque ainda não foram informados.</p>
         </section>
-
-        <section id="beneficios" className="border-b border-slate-100 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-5 px-4 py-7 sm:grid-cols-3 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><Truck size={21}/></span><span><strong className="block text-sm font-extrabold">Entrega para você</strong><span className="text-xs text-slate-500">Consulte as opções de envio</span></span></div>
-            <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><ShieldCheck size={21}/></span><span><strong className="block text-sm font-extrabold">Compra com tranquilidade</strong><span className="text-xs text-slate-500">Informações claras em cada etapa</span></span></div>
-            <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700"><PackageCheck size={21}/></span><span><strong className="block text-sm font-extrabold">Achadinhos selecionados</strong><span className="text-xs text-slate-500">Praticidade e estilo no mesmo lugar</span></span></div>
-          </div>
-        </section>
-
-        <section id="produtos" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-            <div><span className="text-xs font-extrabold uppercase tracking-[0.2em] text-amber-600">Escolhas que valem</span><h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Ofertas em destaque<span className="text-amber-500">.</span></h2><p className="mt-2 text-sm text-slate-500 sm:text-base">Encontre seu próximo favorito por um preço especial.</p></div>
-            <label className="flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2.5 lg:hidden"><Search size={17} className="text-slate-400"/><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar produtos..." className="min-w-0 bg-transparent text-sm outline-none"/></label>
-          </div>
-          <div className="mt-7 flex gap-2 overflow-x-auto pb-2">
-            {categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-bold transition ${category === item ? "bg-slate-950 text-white" : "bg-slate-100 text-slate-600 hover:bg-amber-100 hover:text-slate-950"}`}>{item}</button>)}
-          </div>
-
-          {visibleProducts.length > 0 ? <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-            {visibleProducts.map((product) => <article key={product.id} className="group overflow-hidden rounded-2xl border border-slate-100 bg-white transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:shadow-xl hover:shadow-slate-900/5 sm:rounded-3xl">
-              <div className="relative overflow-hidden bg-slate-100">
-                <img src={product.image} alt={product.name} loading="lazy" className="aspect-[4/4.2] w-full object-cover transition duration-500 group-hover:scale-105"/>
-                <span className="absolute left-2.5 top-2.5 rounded-full bg-amber-400 px-2.5 py-1.5 text-[9px] font-black tracking-wide text-slate-950 sm:left-3 sm:top-3 sm:text-[10px]">{product.badge}</span>
-                <button onClick={() => setFavorites((current) => current.includes(product.id) ? current.filter((id) => id !== product.id) : [...current, product.id])} className={`absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 backdrop-blur transition hover:scale-110 sm:right-3 sm:top-3 sm:h-9 sm:w-9 ${favorites.includes(product.id) ? "text-rose-500" : "text-slate-600"}`} aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={17} fill={favorites.includes(product.id) ? "currentColor" : "none"}/></button>
-              </div>
-              <div className="p-3.5 sm:p-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400 sm:text-xs">{product.category}</span>
-                <h3 className="mt-1.5 min-h-10 text-sm font-extrabold leading-snug text-slate-900 sm:text-base">{product.name}</h3>
-                <div className="mt-2 flex items-center gap-1 text-xs text-amber-500"><span>★</span><strong className="text-slate-700">{product.rating}</strong><span className="text-slate-400">· avaliação</span></div>
-                <div className="mt-3"><span className="block text-xs text-slate-400 line-through">{money(product.oldPrice)}</span><span className="mt-0.5 block text-xl font-black tracking-tight text-slate-950 sm:text-2xl">{money(product.price)}</span><span className="mt-1 block text-[10px] font-medium text-slate-500 sm:text-xs">ou consulte condições de pagamento</span></div>
-                <button onClick={() => addToCart(product)} className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-3 py-3 text-xs font-extrabold text-white transition hover:bg-amber-400 hover:text-slate-950 sm:text-sm"><Plus size={16}/> Adicionar ao carrinho</button>
-              </div>
-            </article>)}
-          </div> : <div className="mt-8 rounded-3xl border border-dashed border-slate-200 px-6 py-16 text-center"><Search size={28} className="mx-auto text-slate-300"/><h3 className="mt-3 text-lg font-bold">Nenhum produto encontrado</h3><p className="mt-1 text-sm text-slate-500">Tente outra busca ou escolha uma categoria diferente.</p><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-4 font-bold text-amber-700 underline">Limpar filtros</button></div>}
-          <p className="mt-7 text-center text-xs leading-5 text-slate-400">* Produtos, valores, avaliações e descontos exibidos são exemplos demonstrativos e devem ser conferidos antes de publicar a loja.</p>
-        </section>
-
-        <section className="px-4 pb-14 sm:px-6 sm:pb-20 lg:px-8">
-          <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white sm:p-10 md:flex-row md:items-center lg:p-14">
-            <div><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-amber-400"><Sparkles size={15}/> Seu próximo achado te espera</span><h2 className="mt-3 max-w-xl text-3xl font-black tracking-tight sm:text-4xl">Comprar bem também é aproveitar.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">Explore a seleção Saliions Promo e descubra produtos para deixar sua rotina ainda melhor.</p></div>
-            <a href="#produtos" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-sm font-black text-slate-950 transition hover:bg-amber-300">Explorar produtos <ArrowRight size={17}/></a>
-          </div>
-        </section>
+        <section className="px-4 pb-14 sm:px-6 sm:pb-20 lg:px-8"><div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 rounded-[2rem] bg-slate-950 p-7 text-white sm:p-10 md:flex-row md:items-center lg:p-14"><div><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-amber-400"><Sparkles size={15}/> Saliions Promo</span><h2 className="mt-3 max-w-xl text-3xl font-black tracking-tight sm:text-4xl">Seu próximo achadinho te espera.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">Explore o catálogo e volte sempre para conferir novidades.</p></div><a href="#produtos" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 text-sm font-black text-slate-950 transition hover:bg-amber-300">Ver catálogo <ArrowRight size={17}/></a></div></section>
       </main>
-
-      <footer className="border-t border-slate-100 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <div className="flex items-center gap-2"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-400"><ShoppingBag size={18}/></span><span><strong className="block text-sm font-black">saliions promo</strong><span className="text-xs text-slate-500">Boas escolhas, preços melhores.</span></span></div>
-          <p className="text-xs text-slate-400">© {new Date().getFullYear()} Saliions Promo. Todos os direitos reservados.</p>
-          <a href="#ofertas" className="text-xs font-bold text-slate-600 hover:text-amber-600">Voltar ao topo ↑</a>
-        </div>
-      </footer>
-
-      {notice && <div role="status" className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-2xl"><Check size={17} className="text-emerald-400"/>{notice}</div>}
-
-      {cartOpen && <div className="fixed inset-0 z-50">
-        <button aria-label="Fechar carrinho" className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" onClick={() => setCartOpen(false)}/>
-        <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white shadow-2xl">
-          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5"><div><h2 className="text-xl font-black">Seu carrinho</h2><p className="mt-1 text-xs text-slate-500">{cartCount} {cartCount === 1 ? "item" : "itens"} selecionados</p></div><button onClick={() => setCartOpen(false)} className="rounded-full p-2 hover:bg-slate-100" aria-label="Fechar"><X size={21}/></button></div>
-          <div className="flex-1 overflow-y-auto px-5 py-4">
-            {cartItems.length === 0 ? <div className="flex h-full flex-col items-center justify-center text-center"><span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400"><ShoppingBag size={28}/></span><h3 className="mt-4 text-lg font-extrabold">Seu carrinho está vazio</h3><p className="mt-1 text-sm text-slate-500">Adicione produtos e eles aparecerão aqui.</p><button onClick={() => setCartOpen(false)} className="mt-5 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white">Explorar produtos</button></div> : <div className="space-y-5">{cartItems.map((product) => <div key={product.id} className="flex gap-3"><img src={product.image} alt={product.name} className="h-24 w-24 rounded-2xl object-cover"/><div className="min-w-0 flex-1"><h3 className="font-extrabold">{product.name}</h3><p className="mt-1 font-black">{money(product.price)}</p><div className="mt-3 inline-flex items-center gap-3 rounded-full border border-slate-200 px-2 py-1"><button onClick={() => changeQuantity(product.id, -1)} aria-label="Diminuir quantidade"><Minus size={14}/></button><span className="min-w-4 text-center text-sm font-bold">{cart[product.id]}</span><button onClick={() => changeQuantity(product.id, 1)} aria-label="Aumentar quantidade"><Plus size={14}/></button></div></div><button onClick={() => changeQuantity(product.id, -(cart[product.id] || 0))} aria-label="Remover produto" className="self-start p-1 text-slate-400 hover:text-rose-500"><X size={17}/></button></div>)}</div>}
-          </div>
-          {cartItems.length > 0 && <div className="border-t border-slate-100 p-5"><div className="flex items-center justify-between"><span className="text-sm text-slate-500">Subtotal</span><strong className="text-2xl font-black">{money(cartTotal)}</strong></div><p className="mt-2 text-xs leading-5 text-slate-400">Frete e pagamento serão definidos na etapa de finalização.</p><button onClick={() => setNotice("O checkout precisa ser configurado antes de receber pedidos.")} className="mt-4 w-full rounded-full bg-amber-400 px-5 py-4 text-sm font-black text-slate-950 transition hover:bg-amber-300">Continuar para finalizar <ArrowRight size={17} className="ml-1 inline"/></button></div>}
-        </aside>
-      </div>}
+      <footer className="border-t border-slate-100 bg-white"><div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8"><div className="flex items-center gap-2"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-400"><ShoppingBag size={18}/></span><span><strong className="block text-sm font-black">saliions promo</strong><span className="text-xs text-slate-500">Boas escolhas, preços melhores.</span></span></div><p className="text-xs text-slate-400">© {new Date().getFullYear()} Saliions Promo. Todos os direitos reservados.</p><a href="#inicio" className="text-xs font-bold text-slate-600 hover:text-amber-600">Voltar ao topo ↑</a></div></footer>
     </div>
   );
 }
