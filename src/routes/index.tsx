@@ -164,8 +164,7 @@ function Index() {
       <header className="sticky top-0 z-30 bg-brand">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 pt-3 sm:gap-4">
           <a href="#inicio" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setSelectedImage(""); setCategory("Todos"); setSearch(""); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label="Saliions Promo — voltar à página inicial" className="flex shrink-0 items-center gap-2.5 text-brand-foreground">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-citron text-citron-foreground"><ShoppingBag size={19} /></span>
-            <span className="hidden leading-none sm:block"><span className="block font-display text-xl font-extrabold tracking-tight">saliions</span><span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.35em] text-citron">promo</span></span>
+            <img src="/saliions-logo.svg" alt="Saliions Promo" className="h-12 w-auto max-w-[190px] object-contain sm:h-14" />
           </a>
           <label className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-background py-1.5 pl-4 pr-1.5 shadow-lg shadow-black/10">
             <Search size={18} className="shrink-0 text-muted-foreground" />
