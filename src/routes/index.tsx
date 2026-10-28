@@ -5,6 +5,10 @@ import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck,
 import coposInox from "@/assets/copos-inox.jpg";
 import kitFerramentas from "@/assets/kit-ferramentas.jpg";
 import canetaDepiladora from "@/assets/caneta-depiladora.jpg";
+import aspiradorConteudo from "@/assets/mini-aspirador-conteudo.png.asset.json";
+import aspiradorTeclado from "@/assets/mini-aspirador-teclado.png.asset.json";
+import aspiradorDetalhe from "@/assets/mini-aspirador-detalhe.png.asset.json";
+import aspiradorKit from "@/assets/mini-aspirador-kit.png.asset.json";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
 
@@ -31,6 +35,7 @@ type Product = {
   description: string;
   details: string[];
   image: string;
+  gallery?: string[];
   paymentUrl?: string;
   price?: number;
   originalPrice?: number;
@@ -41,7 +46,7 @@ type ReviewMedia = { name: string; type: string; dataUrl: string };
 type Review = { id: string; name: string; rating: number; comment: string; date: string; media?: ReviewMedia[] };
 
 const products: Product[] = [
-  { id: 1, name: "Mini Aspirador Automotivo Portátil", price: 49.99, originalPrice: 79.99, category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/e3s5SpnqjSMG", badge: "PRATICIDADE" },
+  { id: 1, name: "Mini Aspirador Automotivo Portátil", price: 49.99, originalPrice: 79.99, category: "Automotivo", description: "Ajude a manter o interior do carro limpo com um aspirador compacto e sem fio, ideal para poeira e pequenas sujeiras em bancos, tapetes, frestas e painéis.", details: ["Portátil e recarregável", "Para frestas, estofados e tapetes", "Entrada informada: DC 5 V / 1–2 A", "Produto ilustrativo; confirme os acessórios com o vendedor"], image: aspiradorConteudo.url, gallery: [aspiradorConteudo.url, aspiradorTeclado.url, aspiradorDetalhe.url, aspiradorKit.url], paymentUrl: "https://pay.kaiross.com.br/e3s5SpnqjSMG", badge: "PRATICIDADE" },
   { id: 2, name: "Conjunto com 10 Copos de Inox 175 ml", price: 109.95, originalPrice: 139.95, category: "Casa e cozinha", description: "Conjunto de copos em aço inox com acabamento hexagonal martelado e parede dupla, uma opção elegante para servir café, chá e outras bebidas.", details: ["10 copos em aço inox", "Capacidade: 175 ml cada", "Altura: 8,5 cm", "Boca: 6,5 cm; base: 5,5 cm"], image: coposInox, paymentUrl: "https://pay.kaiross.com.br/2KXXPAtSF7C1", badge: "KIT COM 10" },
   { id: 3, name: "Jogo de Ferramentas com 46 Peças e Maleta", price: 59.95, originalPrice: 89.95, category: "Ferramentas", description: "Kit compacto para pequenos reparos e tarefas do dia a dia, com soquetes, bits, catraca, extensões e acessórios organizados em uma maleta.", details: ["45 ferramentas e 1 maleta", "Encaixe informado: 1/4 polegada", "Maleta: 24 × 13 × 5 cm", "Material informado: aço e termoplástico"], image: kitFerramentas, paymentUrl: "https://pay.kaiross.com.br/qVSEg6zQPlds", badge: "46 PEÇAS" },
   { id: 4, name: "Escova Secadora para Pets AJ-U07", price: 62.95, originalPrice: 92.95, category: "Pets", description: "Escova secadora 2 em 1 que combina escovação e secagem para ajudar nos cuidados com cães e gatos.", details: ["Cerdas com pontas protegidas, conforme descrição", "Medidas informadas: 12 × 23 cm", "Voltagem informada: 110 V — não bivolt", "Use com cuidado e siga as instruções do fabricante"], image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=85", paymentUrl: "https://pay.kaiross.com.br/smydxoUcFkjr", badge: "CUIDADO PET" },
@@ -152,6 +157,8 @@ function Index() {
   ), [category, search]);
 
   const toggle = (list: number[], id: number) => list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+
+  const detailPhotos = selectedProduct ? selectedProduct.gallery ?? [selectedProduct.image, ...extraPhotos] : [];
 
   const openProduct = (product: Product) => {
     setSelectedProduct(product);
