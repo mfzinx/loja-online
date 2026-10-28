@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 250" role="img" aria-labelledby="title">
+<title id="title">Saliions Promo</title>
+<defs>
+ <linearGradient id="neon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#13e8ff"/><stop offset=".38" stop-color="#285dff"/><stop offset=".68" stop-color="#ec25ff"/><stop offset="1" stop-color="#15dfff"/></linearGradient>
+ <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".48" stop-color="#c6d4ff"/><stop offset="1" stop-color="#8799c9"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="700" height="250" rx="22" fill="#050713"/>
+<ellipse cx="350" cy="125" rx="330" ry="108" fill="none" stroke="url(#neon)" stroke-width="3" opacity=".9" filter="url(#glow)"/>
+<g transform="translate(62 17)">
+ <path d="M65 99 Q45 52 100 37 L280 37 Q318 37 320 65 Q321 88 286 99 L151 132 Q133 137 145 147 Q151 153 174 153 L335 153" fill="none" stroke="#11172d" stroke-width="39" stroke-linecap="round"/>
+ <path d="M65 99 Q45 52 100 37 L280 37 Q318 37 320 65 Q321 88 286 99 L151 132 Q133 137 145 147 Q151 153 174 153 L335 153" fill="none" stroke="url(#neon)" stroke-width="28" stroke-linecap="round" filter="url(#glow)"/>
+ <path d="M359 63 L420 63 L431 145 L350 145 Z" fill="#111c53" stroke="url(#neon)" stroke-width="3"/>
+ <path d="M371 63 C364 4 414 4 406 63" fill="none" stroke="url(#neon)" stroke-width="8" stroke-linecap="round"/>
+ <path d="M210 20 L229 2 L249 20 L266 5 L261 35 L219 35 Z" fill="url(#silver)" stroke="#36dfff" stroke-width="2"/>
+</g>
+<text x="350" y="190" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="54" font-weight="900" letter-spacing="2" fill="url(#silver)" stroke="#17254f" stroke-width="1">SALIIONS</text>
+<text x="350" y="220" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="800" letter-spacing="10" fill="url(#neon)">PROMO</text>
+</svg>
