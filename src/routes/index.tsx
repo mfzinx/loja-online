@@ -248,11 +248,11 @@ function Index() {
               <button onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} className="mb-5 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/5"><ArrowLeft size={18} /> Voltar para os produtos</button>
               <div className="grid gap-7 md:grid-cols-2">
                 <div>
-                  <div className="overflow-hidden rounded-2xl border border-border bg-background">
-                    <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} width={1024} height={1024} className="aspect-square w-full object-contain sm:max-h-[520px]" />
+                  <div className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
+                    <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} className="block h-auto max-h-[560px] w-full object-contain" />
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-2">
-                    {detailPhotos.map((photo, index) => <button key={photo + index} onClick={() => setSelectedImage(photo)} className={`overflow-hidden rounded-xl border-2 ${(selectedImage || selectedProduct.image) === photo ? "border-citron" : "border-border"}`} aria-label={`Ver foto ${index + 1}`}><img src={photo} alt="" loading="lazy" width={500} height={500} className="aspect-square w-full bg-surface object-contain p-1" /></button>)}
+                    {detailPhotos.map((photo, index) => <button key={photo + index} onClick={() => setSelectedImage(photo)} className={`flex h-28 w-full items-center justify-center overflow-hidden rounded-xl border-2 bg-background ${(selectedImage || selectedProduct.image) === photo ? "border-citron" : "border-border"}`} aria-label={`Ver foto ${index + 1}`}><img src={photo} alt="" loading="lazy" className="max-h-full max-w-full object-contain p-1" /></button>)}
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">{selectedProduct.gallery ? "Fotos do produto. Confirme as condições de venda com o vendedor." : "Fotos ilustrativas para visualização. Confirme as imagens reais do modelo com o vendedor."}</p>
                 </div>
@@ -296,7 +296,7 @@ function Index() {
               {visibleProducts.length ? <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleProducts.map((product) => (
                 <article key={product.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <div className="relative bg-background">
-                    <button onClick={() => openProduct(product)} className="block w-full" aria-label={"Ver informações de " + product.name}><img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" width={1024} height={1024} className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.04]" /></button>
+                    <button onClick={() => openProduct(product)} className="block w-full" aria-label={"Ver informações de " + product.name}><img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className={"aspect-square w-full bg-background p-2 transition duration-500 " + (product.id === 6 ? "object-contain" : "object-cover group-hover:scale-[1.04]")} /></button>
                     <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-citron px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-citron-foreground">{product.badge}</span>
                     <button onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/90 text-primary shadow transition hover:bg-background" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></button>
                   </div>
