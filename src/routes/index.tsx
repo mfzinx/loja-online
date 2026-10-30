@@ -252,7 +252,7 @@ function Index() {
                     <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} width={1024} height={1024} className="aspect-square w-full object-contain sm:max-h-[520px]" />
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-2">
-                    {detailPhotos.map((photo, index) => <button key={photo + index} onClick={() => setSelectedImage(photo)} className={`overflow-hidden rounded-xl border-2 ${(selectedImage || selectedProduct.image) === photo ? "border-citron" : "border-border"}`} aria-label={`Ver foto ${index + 1}`}><img src={photo} alt="" loading="lazy" width={500} height={500} className="aspect-square w-full object-cover" /></button>)}
+                    {detailPhotos.map((photo, index) => <button key={photo + index} onClick={() => setSelectedImage(photo)} className={`overflow-hidden rounded-xl border-2 ${(selectedImage || selectedProduct.image) === photo ? "border-citron" : "border-border"}`} aria-label={`Ver foto ${index + 1}`}><img src={photo} alt="" loading="lazy" width={500} height={500} className="aspect-square w-full bg-surface object-contain p-1" /></button>)}
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">{selectedProduct.gallery ? "Fotos do produto. Confirme as condições de venda com o vendedor." : "Fotos ilustrativas para visualização. Confirme as imagens reais do modelo com o vendedor."}</p>
                 </div>
