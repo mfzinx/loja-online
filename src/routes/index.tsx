@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, Send, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
 
 import coposInoxReal from "@/assets/copos-inox-real.jpg";
 import coposInoxTextura from "@/assets/copos-inox-textura.jpg";
@@ -231,6 +231,23 @@ function Index() {
               <h1 className="mt-4 max-w-lg font-display text-3xl font-bold leading-[1.05] text-brand-foreground sm:text-5xl">Boas escolhas, preços melhores</h1>
               <p className="mt-3 max-w-sm text-sm text-brand-foreground/70 sm:text-base">Achadinhos para casa, beleza, pets, tecnologia e muito mais.</p>
               <a href="#produtos" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">Ver ofertas <ArrowRight size={16} /></a>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-5" aria-label="Canal de promoções no Telegram">
+          <div className="relative overflow-hidden rounded-3xl border border-[#229ED9]/20 bg-gradient-to-r from-[#102B46] via-[#123B5B] to-[#176A91] p-5 text-white shadow-lg sm:p-7">
+            <div className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[#229ED9]/20 blur-2xl" />
+            <div className="relative flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+              <div className="flex items-start gap-4">
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#229ED9] shadow-lg shadow-black/15"><Send size={27} className="text-white" /></span>
+                <div>
+                  <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white/90">Canal oficial • Telegram</span>
+                  <h2 className="mt-2 font-display text-2xl font-bold leading-tight sm:text-3xl">Não perca nenhuma promoção!</h2>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75">Entre no nosso canal e receba ofertas especiais, descontos e novidades de produtos diretamente no seu celular.</p>
+                </div>
+              </div>
+              <a href="https://t.me/+Kild6N2iPIE3NGIx" target="_blank" rel="noopener noreferrer" className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1675A9] shadow-md transition hover:-translate-y-0.5 hover:bg-sky-50 sm:w-auto">Entrar no Telegram <ArrowRight size={17} /></a>
             </div>
           </div>
         </section>
