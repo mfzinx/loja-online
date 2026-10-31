@@ -30,9 +30,9 @@ import aspiradorTeclado from "@/assets/mini-aspirador-teclado.png.asset.json";
 import aspiradorDetalhe from "@/assets/mini-aspirador-detalhe.png.asset.json";
 import aspiradorKit from "@/assets/mini-aspirador-kit.png.asset.json";
 import cameraLampada from "@/assets/camera-lampada.webp";
-import cameraLampadaAngulo from "@/assets/camera-lampada-angulo.avif";
-import cameraLampadaDetalhe from "@/assets/camera-lampada-detalhe.avif";
-import cameraLampadaInstalacao from "@/assets/camera-lampada-instalacao.avif";
+import cameraLampadaAngulo from "@/assets/camera-lampada-angulo-real.jpg";
+import cameraLampadaDetalhe from "@/assets/camera-lampada-lente-real.jpg";
+import cameraLampadaInstalacao from "@/assets/camera-lampada-teto-real.jpg";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
 
