@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Use the same approved logo artwork for the store header and its cropped shopping-bag favicon to keep the brand consistent.

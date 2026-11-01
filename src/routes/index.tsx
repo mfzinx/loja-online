@@ -41,6 +41,7 @@ import radioPrincipal from "@/assets/radio-principal.jpg.asset.json";
 import radioDetalhe from "@/assets/radio-detalhe.jpg";
 import radioUso from "@/assets/radio-uso.jpg";
 import radioCarregando from "@/assets/radio-carregando.jpg";
+import saliionsLogo from "@/assets/saliions-logo-site.png";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
 
@@ -203,7 +204,7 @@ function Index() {
       <header className="sticky top-0 z-30 bg-brand">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 pt-3 sm:gap-4">
           <a href="#inicio" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setSelectedImage(""); setCategory("Todos"); setSearch(""); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label="Saliions Promo — voltar à página inicial" className="flex shrink-0 items-center gap-2.5 text-brand-foreground">
-            <img src="/saliions-logo.svg" alt="Saliions Promo" className="h-12 w-auto max-w-[190px] object-contain sm:h-14" />
+            <img src={saliionsLogo} alt="Saliions Promo" width={1314} height={336} className="h-auto w-[144px] shrink-0 object-contain sm:w-[190px]" />
           </a>
           <label className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-background py-1.5 pl-4 pr-1.5 shadow-lg shadow-black/10">
             <Search size={18} className="shrink-0 text-muted-foreground" />
