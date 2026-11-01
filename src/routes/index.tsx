@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Search, Send, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Instagram, Search, Send, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
 
 import coposInoxReal from "@/assets/copos-inox-real.jpg";
 import coposInoxTextura from "@/assets/copos-inox-textura.jpg";
@@ -213,6 +213,7 @@ function Index() {
             <span className="hidden shrink-0 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground sm:block">Buscar</span>
           </label>
           <div className="hidden shrink-0 items-center gap-1.5 rounded-full border border-brand-foreground/20 px-3 py-2 text-sm font-semibold text-brand-foreground md:flex"><Heart size={16} className="text-citron" fill={favorites.length ? "currentColor" : "none"} /> {favorites.length}</div>
+          <a href="https://www.instagram.com/saliions.promo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Saliions Promo" title="Instagram da Saliions Promo" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-foreground/20 text-brand-foreground/70 transition hover:border-brand-foreground/40 hover:text-brand-foreground" ><Instagram size={16} strokeWidth={1.8} /></a>
         </div>
         <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none]">
           {categories.map((item) => (
