@@ -37,6 +37,10 @@ import caixaSomPrincipal from "@/assets/caixa-som-principal.png.asset.json";
 import caixaSomControles from "@/assets/caixa-som-controles.jpg";
 import caixaSomTraseira from "@/assets/caixa-som-traseira.jpg";
 import caixaSomUso from "@/assets/caixa-som-uso.jpg";
+import radioPrincipal from "@/assets/radio-principal.jpg.asset.json";
+import radioDetalhe from "@/assets/radio-detalhe.jpg";
+import radioUso from "@/assets/radio-uso.jpg";
+import radioCarregando from "@/assets/radio-carregando.jpg";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
 
