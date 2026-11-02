@@ -41,6 +41,10 @@ import radioPrincipal from "@/assets/radio-principal.jpg.asset.json";
 import radioDetalhe from "@/assets/radio-detalhe.jpg";
 import radioUso from "@/assets/radio-uso.jpg";
 import radioCarregando from "@/assets/radio-carregando.jpg";
+import roboAspiradorPrincipal from "@/assets/robo-aspirador-principal.png";
+import roboAspiradorDetalhe from "@/assets/robo-aspirador-detalhe.png";
+import roboAspiradorUso from "@/assets/robo-aspirador-uso.png";
+import roboAspiradorCores from "@/assets/robo-aspirador-cores.png";
 import saliionsLogo from "@/assets/saliions-logo-site.png";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
