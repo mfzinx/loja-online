@@ -52,6 +52,10 @@ import miniCalibradorPrincipal from "@/assets/mini-calibrador-principal.jpg.asse
 import miniCalibradorDisplay from "@/assets/mini-calibrador-display-v3.png";
 import miniCalibradorPneu from "@/assets/mini-calibrador-pneu.png";
 import miniCalibradorAcessorios from "@/assets/mini-calibrador-acessorios.png";
+import foneP9AirPrincipal from "@/assets/fone-p9air-principal.jpg.asset.json";
+import foneP9AirBotoes from "@/assets/fone-p9air-botoes.png";
+import foneP9AirUso from "@/assets/fone-p9air-uso.png";
+import foneP9AirAngulo from "@/assets/fone-p9air-angulo.png";
 import saliionsLogo from "@/assets/saliions-logo-site.png";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
