@@ -12,7 +12,6 @@ import kitFerramentasDetalhe from "@/assets/kit-ferramentas-detalhe.jpg";
 import kitFerramentasMaleta from "@/assets/kit-ferramentas-maleta.jpg";
 import kitFerramentasUso from "@/assets/kit-ferramentas-uso.jpg";
 import kitFerramentasPecas from "@/assets/kit-ferramentas-pecas.jpg";
-import canetaDepiladora from "@/assets/caneta-depiladora.jpg";
 import canetaDepiladoraEstudio from "@/assets/caneta-depiladora-estudio.png";
 import canetaDepiladoraPonta from "@/assets/caneta-depiladora-ponta.png";
 import canetaDepiladoraUso from "@/assets/caneta-depiladora-uso.png";
