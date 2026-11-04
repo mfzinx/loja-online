@@ -235,7 +235,7 @@ function Index() {
 
   return (
     <div id="inicio" className="min-h-screen bg-surface font-sans text-foreground">
-      <header className="sticky top-0 z-30 bg-brand">
+      <header ref={headerRef} className="sticky top-0 z-30 bg-brand">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 pt-3 sm:gap-4">
           <a href="#inicio" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setSelectedImage(""); setCategory("Todos"); setSearch(""); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label="Saliions Promo — voltar à página inicial" className="flex shrink-0 items-center gap-2.5 text-brand-foreground">
             <img src={saliionsLogo} alt="Saliions Promo" width={1314} height={336} className="h-auto w-[144px] shrink-0 object-contain sm:w-[190px]" />
@@ -306,10 +306,10 @@ function Index() {
         <section id="produtos" className="mx-auto max-w-6xl px-4 py-8">
           {selectedProduct ? (
             <div className="rounded-3xl border border-border bg-card p-4 sm:p-6">
-              <button onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} className="mb-5 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/5"><ArrowLeft size={18} /> Voltar para os produtos</button>
+              <button onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} style={{ top: headerHeight + 8 }} className="sticky z-20 mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-primary shadow-sm transition hover:bg-primary/5"><ArrowLeft size={18} /> Voltar para os produtos</button>
               <div className="grid gap-7 md:grid-cols-2">
                 <div>
-                  <div className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
+                  <div ref={detailImageRef} className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
                     <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} className="block h-auto max-h-[560px] w-full object-contain" />
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-2">
