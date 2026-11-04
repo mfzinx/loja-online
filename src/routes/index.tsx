@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, BadgePercent, Check, Heart, Instagram, Search, Send, ShieldCheck, ShoppingBag, Star, Truck } from "lucide-react";
 
@@ -129,6 +129,9 @@ function Index() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
+  const headerRef = useRef<HTMLElement>(null);
+  const detailImageRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [reviews, setReviews] = useState<Record<number, Review[]>>({});
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
   const [reviewName, setReviewName] = useState("");
@@ -212,8 +215,23 @@ function Index() {
   const openProduct = (product: Product) => {
     setSelectedProduct(product);
     setSelectedImage(product.image);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const measure = () => setHeaderHeight(header.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedProduct || !detailImageRef.current) return;
+    const top = window.scrollY + detailImageRef.current.getBoundingClientRect().top - (headerRef.current?.offsetHeight ?? 0) - 12;
+    window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+  }, [selectedProduct]);
 
   return (
     <div id="inicio" className="min-h-screen bg-surface font-sans text-foreground">
