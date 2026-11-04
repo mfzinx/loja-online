@@ -130,7 +130,7 @@ function Index() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const headerRef = useRef<HTMLElement>(null);
-  const detailImageRef = useRef<HTMLDivElement>(null);
+  const detailCardRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [reviews, setReviews] = useState<Record<number, Review[]>>({});
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
@@ -228,8 +228,8 @@ function Index() {
   }, []);
 
   useEffect(() => {
-    if (!selectedProduct || !detailImageRef.current) return;
-    const top = window.scrollY + detailImageRef.current.getBoundingClientRect().top - (headerRef.current?.offsetHeight ?? 0) - 12;
+    if (!selectedProduct || !detailCardRef.current) return;
+    const top = window.scrollY + detailCardRef.current.getBoundingClientRect().top - (headerRef.current?.offsetHeight ?? 0) + 8;
     window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
   }, [selectedProduct]);
 
@@ -305,11 +305,11 @@ function Index() {
 
         <section id="produtos" className="mx-auto max-w-6xl px-4 py-8">
           {selectedProduct ? (
-            <div className="rounded-3xl border border-border bg-card p-4 sm:p-6">
+            <div ref={detailCardRef} className="rounded-3xl border border-border bg-card p-4 sm:p-6">
               <button onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} style={{ top: headerHeight + 8 }} className="sticky z-20 mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-primary shadow-sm transition hover:bg-primary/5"><ArrowLeft size={18} /> Voltar para os produtos</button>
               <div className="grid gap-7 md:grid-cols-2">
                 <div>
-                  <div ref={detailImageRef} className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
+                  <div className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
                     <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} className="block h-auto max-h-[560px] w-full object-contain" />
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-2">
