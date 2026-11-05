@@ -181,6 +181,58 @@
 .store-card:hover { box-shadow: var(--shadow-store); }
 .store-card:focus-within { outline: 2px solid var(--primary); outline-offset: 3px; }
 
+@keyframes store-arrive {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes store-photo {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #inicio {
+    --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #inicio .store-card {
+    animation: store-arrive 600ms var(--motion-ease) backwards;
+    transition: transform 350ms var(--motion-ease), box-shadow 350ms ease, border-color 250ms ease;
+  }
+  #inicio .store-card:nth-child(3n + 2) { animation-delay: 70ms; }
+  #inicio .store-card:nth-child(3n + 3) { animation-delay: 140ms; }
+
+  #inicio main > section:first-child h1,
+  #inicio main > section:first-child p,
+  #inicio main > section:first-child a {
+    animation: store-arrive 700ms var(--motion-ease) backwards;
+  }
+  #inicio main > section:first-child p { animation-delay: 80ms; }
+  #inicio main > section:first-child a { animation-delay: 160ms; }
+
+  #inicio #produtos > div > div > div:first-child > div:first-child > img {
+    animation: store-photo 400ms ease-out;
+  }
+
+  #inicio nav button,
+  #inicio a,
+  #inicio button {
+    transition-duration: 250ms;
+    transition-timing-function: var(--motion-ease);
+  }
+
+  #inicio a svg,
+  #inicio button svg { transition: transform 300ms var(--motion-ease); }
+  #inicio nav button:active { transform: scale(0.97); }
+
+  @media (hover: hover) and (pointer: fine) {
+    #inicio .store-card:hover { transform: translateY(-4px); }
+    #inicio a:hover > svg:last-child,
+    #inicio .store-card button:hover > svg:last-child { transform: translateX(2px); }
+  }
+}
+
 @media (max-width: 639px) {
   .store-hero-scrim { background: color-mix(in oklab, var(--surface) 88%, transparent); }
 }
