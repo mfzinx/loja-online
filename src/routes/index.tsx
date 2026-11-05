@@ -61,8 +61,9 @@ import miniCameraA9Detalhe from "@/assets/mini-camera-a9-detalhe-v2.png";
 import miniCameraA9Uso from "@/assets/mini-camera-a9-uso.png";
 import miniCameraA9Kit from "@/assets/mini-camera-a9-kit.png";
 import saliionsLogo from "@/assets/saliions-logo-site.png";
+import { Button } from "@/components/ui/button";
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1600&q=80";
+const HERO_IMAGE = coposInoxMesa;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -72,9 +73,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Saliions Promo | Achadinhos selecionados para o dia a dia" },
       { property: "og:description", content: "Boas escolhas, preços melhores: ofertas de casa, beleza, pets, tecnologia e muito mais." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: HERO_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: HERO_IMAGE },
     ],
   }),
   component: Index,
@@ -240,69 +239,62 @@ function Index() {
 
   return (
     <div id="inicio" className="min-h-screen bg-surface font-sans text-foreground">
-      <header ref={headerRef} className="sticky top-0 z-30 bg-brand">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 pt-3 sm:gap-4">
+      <header ref={headerRef} className="store-header sticky top-0 z-30 bg-brand">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 pt-4 sm:flex-nowrap sm:gap-5">
           <a href="#inicio" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setSelectedImage(""); setCategory("Todos"); setSearch(""); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label="Saliions Promo — voltar à página inicial" className="flex shrink-0 items-center gap-2.5 text-brand-foreground">
             <img src={saliionsLogo} alt="Saliions Promo" width={1314} height={336} className="h-auto w-[144px] shrink-0 object-contain sm:w-[190px]" />
           </a>
-          <label className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-background py-1.5 pl-4 pr-1.5 shadow-lg shadow-black/10">
+          <label className="order-3 flex w-full min-w-0 items-center gap-2 rounded-full bg-background py-1 pl-4 pr-1.5 focus-within:ring-2 focus-within:ring-citron sm:order-none sm:w-auto sm:flex-1">
             <Search size={18} className="shrink-0 text-muted-foreground" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar produtos, marcas e muito mais..." className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground" />
-            <span className="hidden shrink-0 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground sm:block">Buscar</span>
+            <input value={search} onChange={(e) => setSearch(e.target.value)} aria-label="Buscar produtos" placeholder="Buscar na Saliions Promo" className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground" />
+            <Search size={18} className="mr-3 shrink-0 text-primary" aria-hidden="true" />
           </label>
           <div className="hidden shrink-0 items-center gap-1.5 rounded-full border border-brand-foreground/20 px-3 py-2 text-sm font-semibold text-brand-foreground md:flex"><Heart size={16} className="text-citron" fill={favorites.length ? "currentColor" : "none"} /> {favorites.length}</div>
-          <a href="https://www.instagram.com/saliions.promo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Saliions Promo" title="Instagram da Saliions Promo" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-foreground/20 text-brand-foreground/70 transition hover:border-brand-foreground/40 hover:text-brand-foreground" ><Instagram size={16} strokeWidth={1.8} /></a>
+          <a href="https://www.instagram.com/saliions.promo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Saliions Promo" title="Instagram da Saliions Promo" className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-foreground/20 text-brand-foreground/70 transition hover:border-brand-foreground/40 hover:text-brand-foreground" ><Instagram size={16} strokeWidth={1.8} /></a>
         </div>
         <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none]">
           {categories.map((item) => (
-            <button
+            <Button variant="bare" size="natural"
               key={item}
               onClick={() => setCategory(item)}
+              aria-pressed={category === item}
               className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${category === item ? "bg-citron text-citron-foreground" : "border border-brand-foreground/20 text-brand-foreground/75 hover:border-citron/60 hover:text-brand-foreground"}`}
             >
               {item}
-            </button>
+            </Button>
           ))}
         </nav>
       </header>
 
       <main>
-        <section className="mx-auto max-w-6xl px-4 pt-6">
-          <div className="relative overflow-hidden rounded-3xl bg-brand">
-            <img src={HERO_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand via-brand/90 to-brand/40" />
-            <div className="relative px-6 py-10 sm:px-10 sm:py-14">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-citron px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-citron-foreground"><BadgePercent size={13} /> Ofertas do dia</span>
-              <h1 className="mt-4 max-w-lg font-display text-3xl font-bold leading-[1.05] text-brand-foreground sm:text-5xl">Boas escolhas, preços melhores</h1>
-              <p className="mt-3 max-w-sm text-sm text-brand-foreground/70 sm:text-base">Achadinhos para casa, beleza, pets, tecnologia e muito mais.</p>
-              <a href="#produtos" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">Ver ofertas <ArrowRight size={16} /></a>
-            </div>
+        <section className="relative overflow-hidden border-b border-border bg-surface">
+          <img src={HERO_IMAGE} alt="Copos de inox da Saliions Promo à mesa" className="absolute inset-0 h-full w-full object-cover object-center" fetchPriority="high" />
+          <div className="store-hero-scrim absolute inset-0" />
+          <div className="relative mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-12">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary"><BadgePercent size={15} /> Ofertas do dia</span>
+            <h1 className="mt-3 font-display text-4xl font-bold leading-tight sm:text-5xl">Saliions Promo</h1>
+            <p className="mt-2 font-display text-xl font-medium sm:text-2xl">Boas escolhas, preços melhores.</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">Achadinhos para casa, beleza, pets, tecnologia e muito mais.</p>
+            <Button asChild variant="storefront" className="mt-5 h-11 px-6"><a href="#produtos">Ver ofertas <ArrowRight size={16} /></a></Button>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pt-5" aria-label="Canal de promoções no Telegram">
-          <div className="relative overflow-hidden rounded-3xl border border-[#229ED9]/20 bg-gradient-to-r from-[#102B46] via-[#123B5B] to-[#176A91] p-5 text-white shadow-lg sm:p-7">
-            <div className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[#229ED9]/20 blur-2xl" />
-            <div className="relative flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
-              <div className="flex items-start gap-4">
-                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#229ED9] shadow-lg shadow-black/15"><Send size={27} className="text-white" /></span>
-                <div>
-                  <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white/90">Canal oficial • Telegram</span>
-                  <h2 className="mt-2 font-display text-2xl font-bold leading-tight sm:text-3xl">Não perca nenhuma promoção!</h2>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75">Entre no nosso canal e receba ofertas especiais, descontos e novidades de produtos diretamente no seu celular.</p>
-                </div>
-              </div>
-              <a href="https://t.me/+Kild6N2iPIE3NGIx" target="_blank" rel="noopener noreferrer" className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1675A9] shadow-md transition hover:-translate-y-0.5 hover:bg-sky-50 sm:w-auto">Entrar no Telegram <ArrowRight size={17} /></a>
+        <section className="border-b border-border bg-card" aria-label="Canal de promoções no Telegram">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-8">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-social/10 text-social"><Send size={21} /></span>
+              <div><p className="text-[10px] font-bold uppercase text-social">Canal oficial • Telegram</p><h2 className="font-display text-base font-semibold sm:text-lg">Não perca nenhuma promoção!</h2><p className="mt-0.5 text-xs text-muted-foreground">Ofertas, descontos e novidades no seu celular.</p></div>
             </div>
+            <Button asChild variant="bare" className="h-10 w-full rounded-full border border-social/25 px-5 text-xs font-semibold text-social hover:bg-social/5 sm:w-auto"><a href="https://t.me/+Kild6N2iPIE3NGIx" target="_blank" rel="noopener noreferrer">Entrar no Telegram <ArrowRight size={16} /></a></Button>
           </div>
         </section>
 
-        <section id="beneficios" className="mx-auto max-w-6xl px-4 pt-5">
-          <div className="grid gap-3 sm:grid-cols-3">
+        <section id="beneficios" className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-4 border-b border-border py-5 sm:grid-cols-3 sm:gap-6">
             {benefits.map(({ icon: Icon, title, text }) => (
-              <div key={title} className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><Icon size={18} /></span>
-                <span><strong className="block text-sm font-semibold">{title}</strong><span className="text-xs text-muted-foreground">{text}</span></span>
+              <div key={title} className="flex items-center gap-3">
+                <Icon size={21} className="shrink-0 text-primary" />
+                <span><strong className="block text-xs font-semibold sm:text-sm">{title}</strong><span className="text-[11px] text-muted-foreground sm:text-xs">{text}</span></span>
               </div>
             ))}
           </div>
@@ -310,15 +302,15 @@ function Index() {
 
         <section id="produtos" className="mx-auto max-w-6xl px-4 py-8">
           {selectedProduct ? (
-            <div ref={detailCardRef} className="rounded-3xl border border-border bg-card p-4 sm:p-6">
-              <button onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} style={{ top: headerHeight + 8 }} className="sticky z-20 mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-primary shadow-sm transition hover:bg-primary/5"><ArrowLeft size={18} /> Voltar para os produtos</button>
+            <div ref={detailCardRef} className="border-t border-border bg-card p-3 sm:p-6">
+              <Button variant="bare" size="natural" onClick={() => { setSelectedProduct(null); setSelectedImage(""); }} style={{ top: headerHeight + 8 }} className="sticky z-20 mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-primary shadow-sm transition hover:bg-primary/5"><ArrowLeft size={18} /> Voltar para os produtos</Button>
               <div className="grid gap-7 md:grid-cols-2">
                 <div>
-                  <div className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
-                    {selectedProduct.image ? <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} className="block h-auto max-h-[560px] w-full object-contain" /> : <div className="flex min-h-[320px] w-full flex-col items-center justify-center gap-3 text-muted-foreground"><ShoppingBag size={48} strokeWidth={1.3} /><span className="text-sm font-medium">Imagem em breve</span></div>}
+                  <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-border bg-background">
+                    {selectedProduct.image ? <img src={selectedImage || selectedProduct.image} alt={selectedProduct.name + " — foto ilustrativa"} className="block h-full max-h-[560px] w-full object-contain" /> : <div className="flex min-h-[320px] w-full flex-col items-center justify-center gap-3 text-muted-foreground"><ShoppingBag size={48} strokeWidth={1.3} /><span className="text-sm font-medium">Imagem em breve</span></div>}
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-2">
-                    {detailPhotos.map((photo, index) => <button key={photo + index} onClick={() => setSelectedImage(photo)} className={`flex h-28 w-full items-center justify-center overflow-hidden rounded-xl border-2 bg-background ${(selectedImage || selectedProduct.image) === photo ? "border-citron" : "border-border"}`} aria-label={`Ver foto ${index + 1}`}><img src={photo} alt="" loading="lazy" className="max-h-full max-w-full object-contain p-1" /></button>)}
+                    {detailPhotos.map((photo, index) => <Button variant="bare" size="natural" key={photo + index} onClick={() => setSelectedImage(photo)} className={`flex aspect-square h-auto w-full items-center justify-center overflow-hidden rounded-xl border-2 bg-background ${(selectedImage || selectedProduct.image) === photo ? "border-citron" : "border-border"}`} aria-label={`Ver foto ${index + 1}`}><img src={photo} alt="" loading="lazy" className="max-h-full max-w-full object-contain p-1" /></Button>)}
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">{!selectedProduct.image ? "Este produto ainda não possui foto cadastrada." : selectedProduct.gallery ? "Fotos do produto. Confirme as condições de venda com o vendedor." : "Fotos ilustrativas para visualização. Confirme as imagens reais do modelo com o vendedor."}</p>
                 </div>
@@ -326,27 +318,27 @@ function Index() {
                   <span className="inline-block rounded-full bg-citron px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-citron-foreground">{selectedProduct.badge}</span>
                   <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">{selectedProduct.category}</p>
                   <h2 className="mt-1 font-display text-2xl font-bold leading-tight sm:text-3xl">{selectedProduct.name}</h2>
-                  {selectedProduct.price !== undefined && <div className="mt-3 flex flex-wrap items-baseline gap-3"><span className="text-sm text-muted-foreground line-through">{(selectedProduct.originalPrice ?? selectedProduct.price + 30).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span><span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-800">OFERTA</span><p className="font-display text-3xl font-bold text-primary">{selectedProduct.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p></div>}
+                  {selectedProduct.price !== undefined && <div className="mt-3 flex flex-wrap items-baseline gap-3"><span className="text-sm text-muted-foreground line-through">{(selectedProduct.originalPrice ?? selectedProduct.price + 30).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span><span className="rounded-full bg-success/10 px-2.5 py-1 text-xs font-bold text-success">OFERTA</span><p className="font-display text-3xl font-bold text-primary">{selectedProduct.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p></div>}
                   <p className="mt-4 leading-relaxed text-foreground/80">{selectedProduct.description}</p>
                   <h3 className="mt-6 font-display text-lg font-semibold">Informações completas</h3>
                   <ul className="mt-3 space-y-3">{selectedProduct.details.map((detail) => <li key={detail} className="flex gap-2 text-sm text-foreground/80"><Check size={17} className="mt-0.5 shrink-0 text-primary" /><span>{detail}</span></li>)}</ul>
-                  <div className="mt-7 rounded-2xl bg-surface p-4"><p className="text-sm font-semibold">Compra e entrega</p><p className="mt-1 text-sm text-muted-foreground">Preço, pagamento, disponibilidade e condições de entrega são apresentados pelo vendedor na página de compra.</p>
-                    {selectedProduct.inStock === false ? <button disabled className="mt-4 w-full cursor-not-allowed rounded-full bg-muted px-4 py-3 font-bold text-muted-foreground">SEM ESTOQUE</button> : selectedProduct.paymentUrl ? <a href={selectedProduct.paymentUrl} target="_blank" rel="noreferrer" className="mt-4 block w-full rounded-full bg-primary px-4 py-3 text-center font-semibold text-primary-foreground transition hover:bg-primary/90">Comprar agora <ArrowRight className="ml-1 inline" size={17} /></a> : <button disabled className="mt-4 w-full rounded-full bg-secondary px-4 py-3 text-muted-foreground">Em breve</button>}
+                  <div className="mt-7 border-t border-border pt-5"><p className="text-sm font-semibold">Compra e entrega</p><p className="mt-1 text-sm text-muted-foreground">Preço, pagamento, disponibilidade e condições de entrega são apresentados pelo vendedor na página de compra.</p>
+                    {selectedProduct.inStock === false ? <Button variant="bare" size="natural" disabled className="mt-4 w-full cursor-not-allowed rounded-full bg-muted px-4 py-3 font-bold text-muted-foreground">SEM ESTOQUE</Button> : selectedProduct.paymentUrl ? <a href={selectedProduct.paymentUrl} target="_blank" rel="noreferrer" className="mt-4 block w-full rounded-full bg-primary px-4 py-3 text-center font-semibold text-primary-foreground transition hover:bg-primary/90">Comprar agora <ArrowRight className="ml-1 inline" size={17} /></a> : <Button variant="bare" size="natural" disabled className="mt-4 w-full rounded-full bg-secondary px-4 py-3 text-muted-foreground">Em breve</Button>}
                   </div>
-                  <section className="mt-6 rounded-2xl border border-border p-4 sm:p-5">
+                  <section className="mt-6 border-t border-border pt-5">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div><h3 className="font-display text-lg font-semibold">Avaliações dos clientes</h3><p className="mt-1 text-sm text-muted-foreground">Compartilhe sua opinião sobre este produto.</p></div>
-                      {getRatingSummary(selectedProduct.id).count > 0 && <div className="text-right"><div className="flex items-center justify-end gap-1 font-bold"><Star size={17} className="fill-amber-400 text-amber-400" /> {getRatingSummary(selectedProduct.id).average.toFixed(1).replace(".", ",")}/5</div><p className="text-xs text-muted-foreground">{getRatingSummary(selectedProduct.id).count} avaliação(ões)</p></div>}
+                      {getRatingSummary(selectedProduct.id).count > 0 && <div className="text-right"><div className="flex items-center justify-end gap-1 font-bold"><Star size={17} className="fill-rating text-rating" /> {getRatingSummary(selectedProduct.id).average.toFixed(1).replace(".", ",")}/5</div><p className="text-xs text-muted-foreground">{getRatingSummary(selectedProduct.id).count} avaliação(ões)</p></div>}
                     </div>
                     <div className="mt-4 space-y-3">
                       <label className="block text-sm font-medium">Seu nome<input value={reviewName} onChange={(e) => setReviewName(e.target.value)} maxLength={60} placeholder="Como podemos te chamar?" className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary" /></label>
-                      <div><span className="block text-sm font-medium">Sua nota</span><div className="mt-1 flex gap-1" role="radiogroup" aria-label="Escolha uma nota de 1 a 5 estrelas">{[1, 2, 3, 4, 5].map((rating) => <button key={rating} type="button" onClick={() => setReviewRating(rating)} aria-label={`${rating} estrela(s)`} aria-pressed={reviewRating === rating} className="rounded-md p-1 transition hover:scale-110"><Star size={25} className={rating <= reviewRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} /></button>)}</div></div>
+                      <div><span className="block text-sm font-medium">Sua nota</span><div className="mt-1 flex gap-1" role="radiogroup" aria-label="Escolha uma nota de 1 a 5 estrelas">{[1, 2, 3, 4, 5].map((rating) => <Button variant="bare" size="natural" key={rating} type="button" onClick={() => setReviewRating(rating)} aria-label={`${rating} estrela(s)`} aria-pressed={reviewRating === rating} className="rounded-md p-1 transition hover:scale-110"><Star size={25} className={rating <= reviewRating ? "fill-rating text-rating" : "text-muted-foreground"} /></Button>)}</div></div>
                       <label className="block text-sm font-medium">Comentário<textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)} maxLength={600} rows={3} placeholder="Conte como foi sua experiência..." className="mt-1.5 w-full resize-y rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary" /></label>
-                      <div><label className="block text-sm font-medium">Adicionar fotos ou vídeos <span className="font-normal text-muted-foreground">(até 3 arquivos)</span><input type="file" accept="image/*,video/*" multiple onChange={(e) => { handleReviewMedia(e.target.files); e.currentTarget.value = ""; }} className="mt-2 block w-full cursor-pointer text-sm text-muted-foreground file:mr-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:font-semibold file:text-primary" /></label><p className="mt-1 text-xs text-muted-foreground">Imagens e vídeos de até 1 MB cada.</p>{mediaError && <p role="alert" className="mt-2 text-xs font-medium text-red-600">{mediaError}</p>}{reviewMedia.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{reviewMedia.map((media, index) => <div key={media.dataUrl} className="relative overflow-hidden rounded-xl border border-border bg-surface p-1">{media.type.startsWith("video/") ? <video src={media.dataUrl} controls className="aspect-square w-full rounded-lg object-contain" /> : <img src={media.dataUrl} alt={media.name} className="aspect-square w-full rounded-lg object-cover" />}<button type="button" onClick={() => setReviewMedia((current) => current.filter((_, i) => i !== index))} className="mt-1 w-full rounded-lg px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/5">Remover arquivo</button></div>)}</div>}</div>
-                      <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs text-muted-foreground">{reviewText.length}/600 caracteres</span><button type="button" onClick={submitReview} disabled={!reviewName.trim() || !reviewText.trim()} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">Enviar avaliação</button></div>
+                      <div><label className="block text-sm font-medium">Adicionar fotos ou vídeos <span className="font-normal text-muted-foreground">(até 3 arquivos)</span><input type="file" accept="image/*,video/*" multiple onChange={(e) => { handleReviewMedia(e.target.files); e.currentTarget.value = ""; }} className="mt-2 block w-full cursor-pointer text-sm text-muted-foreground file:mr-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:font-semibold file:text-primary" /></label><p className="mt-1 text-xs text-muted-foreground">Imagens e vídeos de até 1 MB cada.</p>{mediaError && <p role="alert" className="mt-2 text-xs font-medium text-destructive">{mediaError}</p>}{reviewMedia.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{reviewMedia.map((media, index) => <div key={media.dataUrl} className="relative overflow-hidden rounded-xl border border-border bg-surface p-1">{media.type.startsWith("video/") ? <video src={media.dataUrl} controls className="aspect-square w-full rounded-lg object-contain" /> : <img src={media.dataUrl} alt={media.name} className="aspect-square w-full rounded-lg object-cover" />}<Button variant="bare" size="natural" type="button" onClick={() => setReviewMedia((current) => current.filter((_, i) => i !== index))} className="mt-1 w-full rounded-lg px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/5">Remover arquivo</Button></div>)}</div>}</div>
+                      <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs text-muted-foreground">{reviewText.length}/600 caracteres</span><Button variant="bare" size="natural" type="button" onClick={submitReview} disabled={!reviewName.trim() || !reviewText.trim()} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">Enviar avaliação</Button></div>
                     </div>
                     <div className="mt-5 space-y-3 border-t border-border pt-4">
-                      {(reviews[selectedProduct.id] ?? []).length ? (reviews[selectedProduct.id] ?? []).map((review) => <article key={review.id} className="rounded-xl bg-surface p-3"><div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm">{review.name}</strong><span className="text-xs text-muted-foreground">{review.date}</span></div><div className="mt-1 flex gap-0.5" aria-label={`Nota ${review.rating} de 5`}>{[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} className={star <= review.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"} />)}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-foreground/80">{review.comment}</p>{review.media && review.media.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{review.media.map((media, index) => <div key={media.dataUrl} className="overflow-hidden rounded-xl border border-border bg-background">{media.type.startsWith("video/") ? <video src={media.dataUrl} controls preload="metadata" className="aspect-square w-full object-contain" /> : <img src={media.dataUrl} alt={`Foto ${index + 1} enviada por ${review.name}`} loading="lazy" className="aspect-square w-full object-cover" />}</div>)}</div>}</article>) : <p className="rounded-xl bg-surface p-4 text-sm text-muted-foreground">Este produto ainda não tem avaliações. Seja o primeiro a avaliar!</p>}
+                      {(reviews[selectedProduct.id] ?? []).length ? (reviews[selectedProduct.id] ?? []).map((review) => <article key={review.id} className="rounded-xl bg-surface p-3"><div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm">{review.name}</strong><span className="text-xs text-muted-foreground">{review.date}</span></div><div className="mt-1 flex gap-0.5" aria-label={`Nota ${review.rating} de 5`}>{[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} className={star <= review.rating ? "fill-rating text-rating" : "text-muted-foreground"} />)}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-foreground/80">{review.comment}</p>{review.media && review.media.length > 0 && <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{review.media.map((media, index) => <div key={media.dataUrl} className="overflow-hidden rounded-xl border border-border bg-background">{media.type.startsWith("video/") ? <video src={media.dataUrl} controls preload="metadata" className="aspect-square w-full object-contain" /> : <img src={media.dataUrl} alt={`Foto ${index + 1} enviada por ${review.name}`} loading="lazy" className="aspect-square w-full object-cover" />}</div>)}</div>}</article>) : <p className="rounded-xl bg-surface p-4 text-sm text-muted-foreground">Este produto ainda não tem avaliações. Seja o primeiro a avaliar!</p>}
                     </div>
                     <p className="mt-3 text-[11px] text-muted-foreground">As avaliações ficam salvas neste navegador e não são compartilhadas automaticamente com outros visitantes.</p>
                   </section>
@@ -356,31 +348,31 @@ function Index() {
           ) : (
             <>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h2 className="font-display text-2xl font-bold tracking-tight">Ofertas para você</h2>
+                <h2 className="font-display text-2xl font-bold">Ofertas para você</h2>
                 <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{visibleProducts.length} produtos</span>
               </div>
               {visibleProducts.length ? <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">{visibleProducts.map((product) => (
-                <article key={product.id} className={`group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 ${product.inStock === false ? "grayscale opacity-60" : "hover:-translate-y-1 hover:shadow-xl"}`}>
-                  <div className="relative bg-background">
-                    <button onClick={() => openProduct(product)} className="block w-full" aria-label={"Ver informações de " + product.name}>{product.image ? <img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className={"aspect-square w-full bg-background p-2 transition duration-500 " + ([6, 10].includes(product.id) ? "object-contain" : "object-cover group-hover:scale-[1.04]")} /> : <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 bg-muted/40 text-muted-foreground"><ShoppingBag size={38} strokeWidth={1.3} /><span className="text-xs font-medium">Imagem em breve</span></div>}</button>
+                <article key={product.id} className={`store-card group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-200 ${product.inStock === false ? "grayscale opacity-60" : "hover:border-primary/35"}`}>
+                  <div className="relative overflow-hidden border-b border-border/60 bg-background">
+                    <Button variant="bare" size="natural" onClick={() => openProduct(product)} className="block aspect-square w-full overflow-hidden" aria-label={"Ver informações de " + product.name}>{product.image ? <img src={product.image} alt={product.name + " — imagem ilustrativa"} loading="lazy" className={"aspect-square w-full bg-background p-2 transition duration-500 " + ([6, 10].includes(product.id) ? "object-contain" : "object-cover group-hover:scale-[1.04]")} /> : <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 bg-muted/40 text-muted-foreground"><ShoppingBag size={38} strokeWidth={1.3} /><span className="text-xs font-medium">Imagem em breve</span></div>}</Button>
                     <span className="pointer-events-none absolute left-2 top-2 rounded-full bg-citron px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-citron-foreground sm:left-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[10px]">{product.badge}</span>
                     {product.inStock === false && <span className="pointer-events-none absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-destructive px-2 py-1 text-[9px] font-extrabold tracking-wide text-destructive-foreground shadow-lg sm:bottom-3 sm:left-3 sm:px-3 sm:py-1.5 sm:text-[11px]">SEM ESTOQUE</span>}
-                    <button onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-2 top-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background/90 text-primary shadow transition hover:bg-background sm:right-3 sm:top-3 sm:h-8 sm:w-8" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></button>
+                    <Button variant="bare" size="natural" onClick={() => setFavorites((c) => toggle(c, product.id))} className="absolute right-2 top-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-background/90 text-primary shadow transition hover:bg-background sm:right-3 sm:top-3 sm:h-8 sm:w-8" aria-label={favorites.includes(product.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} /></Button>
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col gap-1 p-3 sm:gap-1.5 sm:p-4">
                     <p className="truncate text-[9px] font-semibold uppercase tracking-[0.1em] text-primary sm:text-[11px] sm:tracking-[0.16em]">{product.category}</p>
-                    <button onClick={() => openProduct(product)} className="line-clamp-2 text-left font-display text-[13px] font-semibold leading-snug transition group-hover:text-primary sm:text-[15px]">{product.name}</button>
-                    {getRatingSummary(product.id).count > 0 && <div className="flex items-center gap-1 text-xs text-muted-foreground"><Star size={13} className="fill-amber-400 text-amber-400" /><span className="font-semibold">{getRatingSummary(product.id).average.toFixed(1).replace(".", ",")}</span><span>({getRatingSummary(product.id).count})</span></div>}
-                    {product.price !== undefined && <div className="mt-1 flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5"><span className="text-[10px] text-muted-foreground line-through sm:text-xs">{(product.originalPrice ?? product.price + 30).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span><span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold text-emerald-800 sm:px-2 sm:text-[10px]">OFERTA</span><p className="font-display text-base font-bold text-primary sm:text-xl">{product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p></div>}
-                    <p className="line-clamp-2 text-[11px] leading-snug text-muted-foreground sm:text-xs">{product.description}</p>
+                    <Button variant="bare" size="natural" onClick={() => openProduct(product)} className="block min-h-[2.75rem] line-clamp-2 text-left font-display text-[13px] font-semibold leading-snug transition group-hover:text-primary sm:text-[15px]">{product.name}</Button>
+                    {getRatingSummary(product.id).count > 0 && <div className="flex items-center gap-1 text-xs text-muted-foreground"><Star size={13} className="fill-rating text-rating" /><span className="font-semibold">{getRatingSummary(product.id).average.toFixed(1).replace(".", ",")}</span><span>({getRatingSummary(product.id).count})</span></div>}
+                    {product.price !== undefined && <div className="mt-1 flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5"><span className="text-[10px] text-muted-foreground line-through sm:text-xs">{(product.originalPrice ?? product.price + 30).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span><span className="rounded-full bg-success/10 px-1.5 py-0.5 text-[9px] font-bold text-success sm:px-2 sm:text-[10px]">OFERTA</span><p className="font-display text-base font-bold text-foreground sm:text-2xl">{product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p></div>}
+                    <p className="mt-1 hidden line-clamp-2 text-[11px] leading-relaxed text-muted-foreground sm:block sm:text-xs">{product.description}</p>
                     <span className="mt-auto inline-flex items-center gap-1 pt-2 text-[10px] font-semibold text-success sm:gap-1.5 sm:text-xs"><Truck size={14} /> Envio a consultar</span>
                     <div className="mt-2 grid gap-1.5 sm:mt-3 sm:gap-2">
-                      <button onClick={() => openProduct(product)} className="w-full truncate rounded-full border border-primary/25 px-2 py-1.5 text-[11px] font-semibold text-primary transition hover:bg-primary/5 sm:px-3 sm:py-2 sm:text-xs">Ver detalhes completos</button>
-                      {product.inStock === false ? <button disabled className="w-full cursor-not-allowed truncate rounded-full bg-muted px-2 py-2 text-[11px] font-bold text-muted-foreground sm:px-3 sm:py-2.5 sm:text-sm">SEM ESTOQUE</button> : product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="block w-full truncate rounded-full bg-primary px-2 py-2 text-center text-xs font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-3 sm:py-2.5 sm:text-sm">Comprar agora</a> : <button disabled className="w-full truncate rounded-full bg-secondary px-2 py-2 text-[11px] text-muted-foreground sm:px-3 sm:py-2.5 sm:text-sm">Em breve</button>}
+                      <Button variant="bare" size="natural" onClick={() => openProduct(product)} className="flex w-full items-center justify-center gap-1 rounded-full border border-primary/25 px-2 py-2 text-[11px] font-semibold text-primary transition hover:bg-primary/5 sm:px-3 sm:text-xs">Ver detalhes <ArrowRight size={13} /></Button>
+                      {product.inStock === false ? <Button variant="bare" size="natural" disabled className="w-full cursor-not-allowed truncate rounded-full bg-muted px-2 py-2 text-[11px] font-bold text-muted-foreground sm:px-3 sm:py-2.5 sm:text-sm">SEM ESTOQUE</Button> : product.paymentUrl ? <a href={product.paymentUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="block w-full truncate rounded-full bg-primary px-2 py-2 text-center text-xs font-semibold text-primary-foreground transition hover:bg-primary/90 sm:px-3 sm:py-2.5 sm:text-sm">Comprar agora</a> : <Button variant="bare" size="natural" disabled className="w-full truncate rounded-full bg-secondary px-2 py-2 text-[11px] text-muted-foreground sm:px-3 sm:py-2.5 sm:text-sm">Em breve</Button>}
                     </div>
                   </div>
                 </article>
-              ))}</div> : <div className="mt-5 rounded-2xl border border-border bg-card px-6 py-16 text-center"><Search size={28} className="mx-auto text-muted-foreground" /><h3 className="mt-3 font-display text-lg font-semibold">Nenhum produto encontrado</h3><button onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-3 text-sm font-semibold text-primary hover:underline">Limpar filtros</button></div>}
+              ))}</div> : <div className="mt-5 rounded-2xl border border-border bg-card px-6 py-16 text-center"><Search size={28} className="mx-auto text-muted-foreground" /><h3 className="mt-3 font-display text-lg font-semibold">Nenhum produto encontrado</h3><Button variant="bare" size="natural" onClick={() => { setSearch(""); setCategory("Todos"); }} className="mt-3 text-sm font-semibold text-primary hover:underline">Limpar filtros</Button></div>}
               <p className="mt-6 text-xs text-muted-foreground">Imagens ilustrativas. Especificações podem variar conforme a versão do produto. Pagamento realizado em página externa do vendedor.</p>
             </>
           )}

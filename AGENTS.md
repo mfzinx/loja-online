@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Use the same approved logo artwork for the store header and its cropped shopping-bag favicon to keep the brand consistent.
+- Storefront controls use the shared Button variants and global semantic visual tokens so presentation changes remain consistent without changing catalog data.
