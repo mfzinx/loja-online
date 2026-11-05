@@ -60,6 +60,9 @@
   --color-link: var(--link);
   --color-success: var(--success);
   --color-surface: var(--surface);
+  --color-social: var(--social);
+  --color-social-foreground: var(--social-foreground);
+  --color-rating: var(--rating);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -79,6 +82,11 @@
   --link: oklch(0.5 0.1 178);
   --success: oklch(0.58 0.14 155);
   --surface: oklch(0.97 0.012 80);
+  --social: oklch(0.46 0.085 220);
+  --social-foreground: oklch(0.99 0.003 220);
+  --rating: oklch(0.76 0.15 85);
+  --shadow-store: 0 8px 24px -16px oklch(0.24 0.02 60 / 0.3);
+  --hero-scrim: linear-gradient(90deg, var(--surface) 0%, color-mix(in oklab, var(--surface) 96%, transparent) 28%, color-mix(in oklab, var(--surface) 50%, transparent) 56%, transparent 82%);
   --background: oklch(1 0 0);
   --foreground: oklch(0.26 0.02 60);
   --card: oklch(1 0 0);
@@ -114,6 +122,9 @@
 }
 
 .dark {
+  --social: oklch(0.64 0.095 220);
+  --social-foreground: oklch(0.18 0.02 220);
+  --rating: oklch(0.8 0.14 85);
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
@@ -155,6 +166,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 150px;
   }
 
   body {
@@ -162,6 +174,20 @@
     background-color: var(--color-surface);
     color: var(--color-foreground);
   }
+}
+
+.store-header { box-shadow: var(--shadow-store); }
+.store-hero-scrim { background: var(--hero-scrim); }
+.store-card:hover { box-shadow: var(--shadow-store); }
+.store-card:focus-within { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+@media (max-width: 639px) {
+  .store-hero-scrim { background: color-mix(in oklab, var(--surface) 88%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 
 /* Hide the Lovable badge. */
